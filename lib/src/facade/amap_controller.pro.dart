@@ -136,6 +136,7 @@ mixin _Pro on _Holder, _Community {
   Future<void> addDriveRoute({
     @required LatLng from,
     @required LatLng to,
+    List<LatLng> passbyPointList,
     TrafficOption trafficOption,
     double lineWidth = 10,
     ImageProvider customTexture,
