@@ -295,18 +295,6 @@ class _MultiMapScreenState extends State<MultiMapScreen> {
                   },
                 ),
                 ListTile(
-                  title: Center(child: Text('监听位置改变')),
-                  onTap: () async {
-                    await _controller
-                        ?.setMyLocationChangeListener((location) async {
-                      final coord = await location.coord;
-                      toast(
-                        '当前位置: 经度: ${coord.latitude}, 纬度: ${coord.longitude}, 方向: ${await location.bearing}',
-                      );
-                    });
-                  },
-                ),
-                ListTile(
                   title: Center(child: Text('设置以地图为中心进行缩放')),
                   onTap: () async {
                     await _controller?.setZoomByCenter(true);

@@ -46,12 +46,11 @@ class _MAPinAnnotationView_iOSState extends State<MAPinAnnotationView_iOS> {
       Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
     };
 
-    final messageCodec = FluttifyMessageCodec('amap_map_fluttify');
     return UiKitView(
       viewType: 'me.yohom/MAPinAnnotationView',
       gestureRecognizers: gestureRecognizers,
       onPlatformViewCreated: _onViewCreated,
-      creationParamsCodec: messageCodec,
+      creationParamsCodec: kAmapMapFluttifyMessageCodec,
       creationParams: widget.params,
     );
   }
@@ -60,7 +59,7 @@ class _MAPinAnnotationView_iOSState extends State<MAPinAnnotationView_iOS> {
     // 碰到一个对象返回的hashCode为0的情况, 造成和这个id冲突了, 这里用一个magic number避免一下
     // 把viewId转换为refId再使用, 使其与其他对象统一
     final refId = await viewId2RefId((2147483647 - id).toString());
-    _controller = MAPinAnnotationView()..refId = refId;
+    _controller = MAPinAnnotationView()..refId = 'MAPinAnnotationView:$refId';
     if (widget.onViewCreated != null) {
       widget.onViewCreated(_controller);
     }
@@ -69,7 +68,7 @@ class _MAPinAnnotationView_iOSState extends State<MAPinAnnotationView_iOS> {
   @override
   void dispose() {
     if (widget.onDispose != null) {
-      widget.onDispose().then((_) => _controller.release__());
+      widget.onDispose().whenComplete(() => _controller.release__());
     } else {
       _controller.release__();
     }

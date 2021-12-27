@@ -24,19 +24,22 @@ class com_amap_api_maps_model_BaseOptions extends java_lang_Object  {
 
   //region creators
   static Future<com_amap_api_maps_model_BaseOptions> create__() async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createcom_amap_api_maps_model_BaseOptions__', );
-    final object = com_amap_api_maps_model_BaseOptions()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createcom_amap_api_maps_model_BaseOptions__',
+    
+    );
+    return AmapMapFluttifyAndroidAs<com_amap_api_maps_model_BaseOptions>(__result__);
   }
   
   static Future<List<com_amap_api_maps_model_BaseOptions>> create_batch__(int length) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchcom_amap_api_maps_model_BaseOptions__', {'length': length});
-  
-    final List<com_amap_api_maps_model_BaseOptions> typedResult = resultBatch.map((result) => com_amap_api_maps_model_BaseOptions()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchcom_amap_api_maps_model_BaseOptions__',
+      {'length': length}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyAndroidAs<com_amap_api_maps_model_BaseOptions>(it))
+        .toList();
   }
   
   //endregion

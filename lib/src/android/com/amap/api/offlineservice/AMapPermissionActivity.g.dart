@@ -24,19 +24,22 @@ class com_amap_api_offlineservice_AMapPermissionActivity extends android_app_Act
 
   //region creators
   static Future<com_amap_api_offlineservice_AMapPermissionActivity> create__() async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createcom_amap_api_offlineservice_AMapPermissionActivity__', );
-    final object = com_amap_api_offlineservice_AMapPermissionActivity()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createcom_amap_api_offlineservice_AMapPermissionActivity__',
+    
+    );
+    return AmapMapFluttifyAndroidAs<com_amap_api_offlineservice_AMapPermissionActivity>(__result__);
   }
   
   static Future<List<com_amap_api_offlineservice_AMapPermissionActivity>> create_batch__(int length) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchcom_amap_api_offlineservice_AMapPermissionActivity__', {'length': length});
-  
-    final List<com_amap_api_offlineservice_AMapPermissionActivity> typedResult = resultBatch.map((result) => com_amap_api_offlineservice_AMapPermissionActivity()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchcom_amap_api_offlineservice_AMapPermissionActivity__',
+      {'length': length}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyAndroidAs<com_amap_api_offlineservice_AMapPermissionActivity>(it))
+        .toList();
   }
   
   //endregion
@@ -58,19 +61,13 @@ class com_amap_api_offlineservice_AMapPermissionActivity extends android_app_Act
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('com.amap.api.offlineservice.AMapPermissionActivity::onRequestPermissionsResult', {"var1": var1, "var2": Array.ofList(var2), "var3": var3, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('com.amap.api.offlineservice.AMapPermissionActivity::onRequestPermissionsResult', {"var1": var1, "var2": Array.ofList(var2), "var3": var3, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   //endregion
@@ -93,21 +90,13 @@ extension com_amap_api_offlineservice_AMapPermissionActivity_Batch on List<com_a
   //region methods
   
   Future<List<void>> onRequestPermissionsResult_batch(List<int> var1, List<List<String>> var2, List<Int32List> var3) async {
-    if (var1.length != var2.length || var2.length != var3.length) {
-      return Future.error('all args must have same length!');
-    }
+    assert(var1.length == var2.length && var2.length == var3.length);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('com.amap.api.offlineservice.AMapPermissionActivity::onRequestPermissionsResult_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"var1": var1[__i__], "var2": var2[__i__], "var3": var3[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('com.amap.api.offlineservice.AMapPermissionActivity::onRequestPermissionsResult_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"var1": var1[__i__], "var2": var2[__i__], "var3": var3[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => __result__).cast<void>().toList();
   }
   
   //endregion

@@ -70,7 +70,7 @@ extern BOOL enableLog;
     // 这里用一个magic number调整一下id
     // 同时存放viewId和refId的对象, 供后续viewId转refId使用
     HEAP[[NSString stringWithFormat:@"%@", @(2147483647 - _viewId)]] = _view;
-    HEAP[[NSString stringWithFormat:@"%@", @(_view.hash)]] = _view;
+    HEAP[[NSString stringWithFormat:@"%@:%@", @"MAAnnotationView", @(_view.hash)]] = _view;
   }
 
   //region method call handler
@@ -83,10 +83,16 @@ extern BOOL enableLog;
     NSDictionary<NSString *, id> *args = (NSDictionary<NSString *, id> *) [methodCall arguments];
 
     __strong __typeof(weakSelf) strongSelf = weakSelf;
-    if (strongSelf != nil && strongSelf->_handlerMap[methodCall.method] != nil) {
-      strongSelf->_handlerMap[methodCall.method](strongSelf->_registrar, args, methodResult);
+    if (strongSelf != nil) {
+      if (strongSelf->_handlerMap[methodCall.method] != nil) {
+        strongSelf->_handlerMap[methodCall.method](strongSelf->_registrar, args, methodResult);
+      } else {
+        methodResult(FlutterMethodNotImplemented);
+      }
     } else {
-      methodResult(FlutterMethodNotImplemented);
+      methodResult([FlutterError errorWithCode:@"当前PlatformView为nil"
+                                       message: @"当前PlatformView为nil"
+                                       details:[NSString stringWithFormat:@"请不要在 %@ 释放后继续调用其对象的方法", NSStringFromClass([MAMapView class])]]);
     }
   }];
   //endregion
@@ -94,6 +100,10 @@ extern BOOL enableLog;
   //region handlers
   _handlerMap = @{
       @"MAAnnotationView::setSelected_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAAnnotationView::setSelected_animated(%@)", args);
+          }
+      
           // args
           // jsonable arg
           BOOL selected = [args[@"selected"] boolValue];
@@ -102,10 +112,9 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAAnnotationView@%@::setSelected(%@, %@)", args[@"refId"], args[@"selected"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -118,6 +127,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAAnnotationView::initWithAnnotation_reuseIdentifier": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAAnnotationView::initWithAnnotation_reuseIdentifier(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAAnnotation> annotation = (id<MAAnnotation>) (args[@"annotation"] == [NSNull null] ? nil : args[@"annotation"]);
@@ -126,10 +139,9 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAAnnotationView@%@::initWithAnnotation(%@, %@)", args[@"refId"], args[@"annotation"], args[@"reuseIdentifier"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -142,15 +154,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAAnnotationView::prepareForReuse": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAAnnotationView::prepareForReuse(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAAnnotationView@%@::prepareForReuse()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -163,6 +178,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAAnnotationView::setDragState_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAAnnotationView::setDragState_animated(%@)", args);
+          }
+      
           // args
           // enum arg
           MAAnnotationViewDragState newDragState = (MAAnnotationViewDragState) [args[@"newDragState"] integerValue];
@@ -171,10 +190,9 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAAnnotationView@%@::setDragState(%@, %@)", args[@"refId"], args[@"newDragState"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -194,6 +212,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSString* result = ref.reuseIdentifier;
@@ -212,6 +234,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSInteger result = ref.zIndex;
@@ -230,6 +256,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           id<MAAnnotation> result = ref.annotation;
@@ -248,6 +278,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           UIImage* result = ref.image;
@@ -266,6 +300,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MACustomCalloutView* result = ref.customCalloutView;
@@ -284,6 +322,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGPoint result = ref.centerOffset;
@@ -302,6 +344,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGPoint result = ref.calloutOffset;
@@ -320,6 +366,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.enabled;
@@ -338,6 +388,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.highlighted;
@@ -356,6 +410,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.selected;
@@ -374,6 +432,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.canShowCallout;
@@ -392,6 +454,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           UIView* result = ref.leftCalloutAccessoryView;
@@ -410,6 +476,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           UIView* result = ref.rightCalloutAccessoryView;
@@ -428,6 +498,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.draggable;
@@ -446,6 +520,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MAAnnotationViewDragState result = ref.dragState;
@@ -464,6 +542,10 @@ extern BOOL enableLog;
       
           // ref object
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.canAdjustPositon;
@@ -486,6 +568,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.zIndex = zIndex;
           methodResult(@"success");
@@ -503,6 +589,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.annotation = annotation;
           methodResult(@"success");
@@ -520,6 +610,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.image = image;
           methodResult(@"success");
@@ -537,6 +631,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.customCalloutView = customCalloutView;
           methodResult(@"success");
@@ -552,10 +650,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* centerOffsetValue = (NSValue*) args[@"centerOffset"];
           CGPoint centerOffset;
-          [centerOffsetValue getValue:&centerOffset];
+          if (centerOffsetValue != nil && (NSNull*) centerOffsetValue != [NSNull null]) {
+            [centerOffsetValue getValue:&centerOffset];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"centerOffset不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.centerOffset = centerOffset;
           methodResult(@"success");
@@ -571,10 +681,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* calloutOffsetValue = (NSValue*) args[@"calloutOffset"];
           CGPoint calloutOffset;
-          [calloutOffsetValue getValue:&calloutOffset];
+          if (calloutOffsetValue != nil && (NSNull*) calloutOffsetValue != [NSNull null]) {
+            [calloutOffsetValue getValue:&calloutOffset];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"calloutOffset不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.calloutOffset = calloutOffset;
           methodResult(@"success");
@@ -592,6 +714,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.enabled = enabled;
           methodResult(@"success");
@@ -609,6 +735,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.highlighted = highlighted;
           methodResult(@"success");
@@ -626,6 +756,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.selected = selected;
           methodResult(@"success");
@@ -643,6 +777,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.canShowCallout = canShowCallout;
           methodResult(@"success");
@@ -660,6 +798,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.leftCalloutAccessoryView = leftCalloutAccessoryView;
           methodResult(@"success");
@@ -677,6 +819,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.rightCalloutAccessoryView = rightCalloutAccessoryView;
           methodResult(@"success");
@@ -694,6 +840,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.draggable = draggable;
           methodResult(@"success");
@@ -711,6 +861,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.dragState = dragState;
           methodResult(@"success");
@@ -728,6 +882,10 @@ extern BOOL enableLog;
       
           // ref
           MAAnnotationView* ref = (MAAnnotationView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.canAdjustPositon = canAdjustPositon;
           methodResult(@"success");
@@ -742,7 +900,7 @@ extern BOOL enableLog;
 - (void)traceManager : (MATraceManager*)manager didTrace: (NSArray<CLLocation*>*)locations correct: (NSArray<MATracePoint*>*)tracePoints distance: (double)distance withError: (NSError*)error
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -771,7 +929,7 @@ extern BOOL enableLog;
 - (void)mapViewRequireLocationAuth : (CLLocationManager*)locationManager
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -792,7 +950,7 @@ extern BOOL enableLog;
 - (void)multiPointOverlayRenderer : (MAMultiPointOverlayRenderer*)renderer didItemTapped: (MAMultiPointItem*)item
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMultiPointOverlayRendererDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMultiPointOverlayRendererDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -815,7 +973,7 @@ extern BOOL enableLog;
 - (void)mapViewRegionChanged : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -836,7 +994,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionWillChangeAnimated: (BOOL)animated
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -859,7 +1017,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionDidChangeAnimated: (BOOL)animated
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -882,7 +1040,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionWillChangeAnimated: (BOOL)animated wasUserAction: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -907,7 +1065,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionDidChangeAnimated: (BOOL)animated wasUserAction: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -932,7 +1090,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapWillMoveByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -955,7 +1113,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapDidMoveByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -978,7 +1136,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapWillZoomByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1001,7 +1159,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapDidZoomByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1024,7 +1182,7 @@ extern BOOL enableLog;
 - (void)mapViewWillStartLoadingMap : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1045,7 +1203,7 @@ extern BOOL enableLog;
 - (void)mapViewDidFinishLoadingMap : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1066,7 +1224,7 @@ extern BOOL enableLog;
 - (void)mapViewDidFailLoadingMap : (MAMapView*)mapView withError: (NSError*)error
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1089,7 +1247,7 @@ extern BOOL enableLog;
 - (MAAnnotationView*)mapView : (MAMapView*)mapView viewForAnnotation: (id<MAAnnotation>)annotation
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1123,7 +1281,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAddAnnotationViews: (NSArray*)views
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1146,7 +1304,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didSelectAnnotationView: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1169,7 +1327,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didDeselectAnnotationView: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1192,7 +1350,7 @@ extern BOOL enableLog;
 - (void)mapViewWillStartLocatingUser : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1213,7 +1371,7 @@ extern BOOL enableLog;
 - (void)mapViewDidStopLocatingUser : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1234,7 +1392,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didUpdateUserLocation: (MAUserLocation*)userLocation updatingLocation: (BOOL)updatingLocation
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1259,7 +1417,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didFailToLocateUserWithError: (NSError*)error
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1282,7 +1440,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView annotationView: (MAAnnotationView*)view didChangeDragState: (MAAnnotationViewDragState)newState fromOldState: (MAAnnotationViewDragState)oldState
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1309,7 +1467,7 @@ extern BOOL enableLog;
 - (MAOverlayRenderer*)mapView : (MAMapView*)mapView rendererForOverlay: (id<MAOverlay>)overlay
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1343,7 +1501,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAddOverlayRenderers: (NSArray*)overlayRenderers
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1366,7 +1524,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView annotationView: (MAAnnotationView*)view calloutAccessoryControlTapped: (UIControl*)control
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1391,7 +1549,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAnnotationViewCalloutTapped: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1414,7 +1572,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAnnotationViewTapped: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1437,7 +1595,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didChangeUserTrackingMode: (MAUserTrackingMode)mode animated: (BOOL)animated
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1462,7 +1620,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didChangeOpenGLESDisabled: (BOOL)openGLESDisabled
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1485,7 +1643,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didTouchPois: (NSArray*)pois
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1508,7 +1666,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didSingleTappedAtCoordinate: (CLLocationCoordinate2D)coordinate
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1532,7 +1690,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didLongPressedAtCoordinate: (CLLocationCoordinate2D)coordinate
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1556,7 +1714,7 @@ extern BOOL enableLog;
 - (void)mapInitComplete : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1577,7 +1735,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didIndoorMapShowed: (MAIndoorInfo*)indoorInfo
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1600,7 +1758,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didIndoorMapFloorIndexChanged: (MAIndoorInfo*)indoorInfo
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1623,7 +1781,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didIndoorMapHidden: (MAIndoorInfo*)indoorInfo
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1646,7 +1804,7 @@ extern BOOL enableLog;
 - (void)offlineDataWillReload : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -1667,7 +1825,7 @@ extern BOOL enableLog;
 - (void)offlineDataDidReload : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log

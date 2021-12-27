@@ -9,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'custom/android/PathSmoothTool.g.dart';
+import 'custom/ios/MALonLatPoint.g.dart';
+import 'custom/ios/MASmoothPathTool.g.dart';
 import 'extensions.dart';
 import 'list.x.dart';
 
@@ -16,11 +19,15 @@ export 'package:amap_core_fluttify/amap_core_fluttify.dart';
 
 /// 轨迹纠偏过程回调，一条轨迹分割为多个段，按索引顺序回调其中一段 [index]片段索引 [traceList]当前片段的经纬度列表
 typedef OnTraceProcessing = Future<void> Function(
-    int index, List<LatLng> traceList);
+  int index,
+  List<LatLng> traceList,
+);
 
 /// 轨迹纠偏成功回调 [traceList]纠偏后的经纬度列表 [distance]路程
 typedef OnTraceFinished = Future<void> Function(
-    List<LatLng> traceList, int distance);
+  List<LatLng> traceList,
+  int distance,
+);
 
 /// 轨迹纠偏失败回调
 typedef OnTraceFailed = Future<void> Function(int errorCode, String errorInfo);
@@ -28,7 +35,7 @@ typedef OnTraceFailed = Future<void> Function(int errorCode, String errorInfo);
 final _traceListener = _TraceListener();
 
 /// 除了地图以外的功能放在这里, 比如说sdk初始化
-class AmapService {
+class AmapService implements IMapService {
   static AmapService instance = AmapService._();
 
   AmapService._();
@@ -36,6 +43,7 @@ class AmapService {
   String _webKey;
 
   /// 设置ios和android的app key
+  @override
   Future<void> init({
     @required String iosKey,
     @required String androidKey,
@@ -99,15 +107,18 @@ class AmapService {
 
   /// 转换其他坐标系到高德坐标系
   ///
-  /// [coord]待转换坐标, [fromType]待转换坐标的坐标系
-  Future<LatLng> convertCoord(LatLng coord, CoordType fromType) async {
+  /// [coordinate]待转换坐标, [fromType]待转换坐标的坐标系
+  Future<LatLng> convertCoordinate(
+    LatLng coordinate,
+    CoordType fromType,
+  ) async {
     return platform(
       android: (pool) async {
         final context = await android_app_Activity.get();
 
         // 待转换坐标
-        final targetCoord = await com_amap_api_maps_model_LatLng
-            .create__double__double(coord.latitude, coord.longitude);
+        final targetCoordinate = await com_amap_api_maps_model_LatLng
+            .create__double__double(coordinate.latitude, coordinate.longitude);
 
         // 转换器
         final converter = await com_amap_api_maps_CoordinateConverter
@@ -144,12 +155,12 @@ class AmapService {
             break;
         }
 
-        await converter.coord(targetCoord);
+        await converter.coord(targetCoordinate);
 
         final result = await converter.convert();
 
         // 释放两个点
-        pool..add(targetCoord)..add(context)..add(converter)..add(result);
+        pool..add(targetCoordinate)..add(context)..add(converter)..add(result);
 
         return LatLng(
           await result.get_latitude(),
@@ -159,7 +170,7 @@ class AmapService {
       ios: (pool) async {
         // 待转换坐标
         final targetCoord = await CLLocationCoordinate2D.create(
-            coord.latitude, coord.longitude);
+            coordinate.latitude, coordinate.longitude);
 
         AMapCoordinateType type;
         switch (fromType) {
@@ -196,7 +207,7 @@ class AmapService {
     );
   }
 
-  /// 计算面积 (iOS未完成)
+  /// 计算面积
   ///
   /// 计算指定左上角[leftTop]和右下角[rightBottom]的矩形的面积
   Future<double> calculateArea(
@@ -227,18 +238,16 @@ class AmapService {
         // 点1
         final _location1 = await CLLocationCoordinate2D.create(
             leftTop.latitude, leftTop.longitude);
-        final mapPoint1 = await MAMapPointForCoordinate(_location1);
 
         // 点2
         final _location2 = await CLLocationCoordinate2D.create(
             rightBottom.latitude, rightBottom.longitude);
-        final mapPoint2 = await MAMapPointForCoordinate(_location2);
 
         // 计算结果
-        final result = await MAMetersBetweenMapPoints(mapPoint1, mapPoint2);
+        final result = await MAAreaBetweenCoordinates(_location1, _location2);
 
         // 释放两个点相关的数据
-        pool..add(_location1)..add(_location2)..add(mapPoint1)..add(mapPoint2);
+        pool..add(_location1)..add(_location2);
 
         return result;
       },
@@ -384,6 +393,57 @@ class AmapService {
     var request = await httpClient.getUrl(Uri.parse(url));
     var response = await request.close();
     return consolidateHttpClientResponseBytes(response);
+  }
+
+  /// 轨迹平滑处理
+  Future<List<LatLng>> pathSmooth(
+    List<LatLng> coordinateList, {
+    int intensity = 3,
+    double threshold = 0.3,
+  }) async {
+    assert(coordinateList != null);
+    if (coordinateList.isEmpty) return [];
+
+    final latitudeBatch = coordinateList.map((e) => e.latitude).toList();
+    final longitudeBatch = coordinateList.map((e) => e.longitude).toList();
+
+    return platform(
+      android: (pool) async {
+        final pathSmooth =
+            await com_amap_api_maps_utils_PathSmoothTool.create__();
+        await pathSmooth.setIntensity(intensity);
+        await pathSmooth.setThreshhold(threshold);
+        final result = await pathSmooth.pathOptimize(
+            await com_amap_api_maps_model_LatLng.create_batch__double__double(
+                latitudeBatch, longitudeBatch));
+
+        final resultLatitudeBatch = await result.get_latitude_batch();
+        final resultLongitudeBatch = await result.get_longitude_batch();
+        return [
+          for (int i = 0; i < result.length; i++)
+            LatLng(resultLatitudeBatch[i], resultLongitudeBatch[i])
+        ];
+      },
+      ios: (pool) async {
+        final pathSmooth = await MASmoothPathTool.create__();
+        await pathSmooth.set_intensity(intensity);
+        await pathSmooth.set_threshHold(threshold);
+
+        final pointBatch =
+            await MALonLatPoint.create_batch__(coordinateList.length);
+        await pointBatch.set_lat_batch(latitudeBatch);
+        await pointBatch.set_lon_batch(longitudeBatch);
+
+        final result = await pathSmooth.pathOptimize(pointBatch);
+
+        final resultLatitudeBatch = await result.get_lat_batch();
+        final resultLongitudeBatch = await result.get_lon_batch();
+        return [
+          for (int i = 0; i < result.length; i++)
+            LatLng(resultLatitudeBatch[i], resultLongitudeBatch[i])
+        ];
+      },
+    );
   }
 }
 

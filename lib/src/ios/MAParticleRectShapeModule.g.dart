@@ -24,19 +24,22 @@ class MAParticleRectShapeModule extends NSObject with MAParticleShapeModule {
 
   //region creators
   static Future<MAParticleRectShapeModule> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAParticleRectShapeModule', {'init': init});
-    final object = MAParticleRectShapeModule()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAParticleRectShapeModule',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAParticleRectShapeModule>(__result__);
   }
   
   static Future<List<MAParticleRectShapeModule>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAParticleRectShapeModule', {'length': length, 'init': init});
-  
-    final List<MAParticleRectShapeModule> typedResult = resultBatch.map((result) => MAParticleRectShapeModule()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAParticleRectShapeModule',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAParticleRectShapeModule>(it))
+        .toList();
   }
   
   //endregion
@@ -58,19 +61,13 @@ class MAParticleRectShapeModule extends NSObject with MAParticleShapeModule {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleRectShapeModule::initWithLeft_top_right_bottom_useRatio', {"left": left, "top": top, "right": right, "bottom": bottom, "isUseRatio": isUseRatio, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAParticleRectShapeModule::initWithLeft_top_right_bottom_useRatio', {"left": left, "top": top, "right": right, "bottom": bottom, "isUseRatio": isUseRatio, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MAParticleRectShapeModule()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MAParticleRectShapeModule>(__result__);
   }
   
   //endregion
@@ -93,21 +90,13 @@ extension MAParticleRectShapeModule_Batch on List<MAParticleRectShapeModule> {
   //region methods
   
   Future<List<MAParticleRectShapeModule>> initWithLeft_top_right_bottom_useRatio_batch(List<double> left, List<double> top, List<double> right, List<double> bottom, List<bool> isUseRatio) async {
-    if (left.length != top.length || top.length != right.length || right.length != bottom.length || bottom.length != isUseRatio.length) {
-      return Future.error('all args must have same length!');
-    }
+    assert(left.length == top.length && top.length == right.length && right.length == bottom.length && bottom.length == isUseRatio.length);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleRectShapeModule::initWithLeft_top_right_bottom_useRatio_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"left": left[__i__], "top": top[__i__], "right": right[__i__], "bottom": bottom[__i__], "isUseRatio": isUseRatio[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAParticleRectShapeModule::initWithLeft_top_right_bottom_useRatio_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"left": left[__i__], "top": top[__i__], "right": right[__i__], "bottom": bottom[__i__], "isUseRatio": isUseRatio[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAParticleRectShapeModule()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MAParticleRectShapeModule>(__result__)).cast<MAParticleRectShapeModule>().toList();
   }
   
   //endregion

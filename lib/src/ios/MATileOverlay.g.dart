@@ -24,94 +24,97 @@ class MATileOverlay extends NSObject with MAAnnotation, MAOverlay {
 
   //region creators
   static Future<MATileOverlay> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMATileOverlay', {'init': init});
-    final object = MATileOverlay()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMATileOverlay',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MATileOverlay>(__result__);
   }
   
   static Future<List<MATileOverlay>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMATileOverlay', {'length': length, 'init': init});
-  
-    final List<MATileOverlay> typedResult = resultBatch.map((result) => MATileOverlay()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMATileOverlay',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MATileOverlay>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<CGSize> get_tileSize() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_tileSize", {'__this__': this});
-    return __result__ == null ? null : (CGSize()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_tileSize", {'__this__': this});
+    return AmapMapFluttifyIOSAs<CGSize>(__result__);
   }
   
   Future<int> get_minimumZ() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_minimumZ", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_minimumZ", {'__this__': this});
+    return __result__;
   }
   
   Future<int> get_maximumZ() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_maximumZ", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_maximumZ", {'__this__': this});
+    return __result__;
   }
   
   Future<String> get_URLTemplate() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_URLTemplate", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_URLTemplate", {'__this__': this});
+    return __result__;
   }
   
   Future<bool> get_canReplaceMapContent() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_canReplaceMapContent", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_canReplaceMapContent", {'__this__': this});
+    return __result__;
   }
   
   Future<MAMapRect> get_boundingMapRect() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_boundingMapRect", {'__this__': this});
-    return __result__ == null ? null : (MAMapRect()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_boundingMapRect", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAMapRect>(__result__);
   }
   
   Future<bool> get_disableOffScreenTileLoading() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_disableOffScreenTileLoading", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_disableOffScreenTileLoading", {'__this__': this});
+    return __result__;
   }
   
   //endregion
 
   //region setters
   Future<void> set_tileSize(CGSize tileSize) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::set_tileSize', <String, dynamic>{'__this__': this, "tileSize": tileSize});
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_tileSize', <String, dynamic>{'__this__': this, "tileSize": tileSize});
   
   
   }
   
   Future<void> set_minimumZ(int minimumZ) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::set_minimumZ', <String, dynamic>{'__this__': this, "minimumZ": minimumZ});
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_minimumZ', <String, dynamic>{'__this__': this, "minimumZ": minimumZ});
   
   
   }
   
   Future<void> set_maximumZ(int maximumZ) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::set_maximumZ', <String, dynamic>{'__this__': this, "maximumZ": maximumZ});
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_maximumZ', <String, dynamic>{'__this__': this, "maximumZ": maximumZ});
   
   
   }
   
   Future<void> set_canReplaceMapContent(bool canReplaceMapContent) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::set_canReplaceMapContent', <String, dynamic>{'__this__': this, "canReplaceMapContent": canReplaceMapContent});
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_canReplaceMapContent', <String, dynamic>{'__this__': this, "canReplaceMapContent": canReplaceMapContent});
   
   
   }
   
   Future<void> set_boundingMapRect(MAMapRect boundingMapRect) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::set_boundingMapRect', <String, dynamic>{'__this__': this, "boundingMapRect": boundingMapRect});
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_boundingMapRect', <String, dynamic>{'__this__': this, "boundingMapRect": boundingMapRect});
   
   
   }
   
   Future<void> set_disableOffScreenTileLoading(bool disableOffScreenTileLoading) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::set_disableOffScreenTileLoading', <String, dynamic>{'__this__': this, "disableOffScreenTileLoading": disableOffScreenTileLoading});
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_disableOffScreenTileLoading', <String, dynamic>{'__this__': this, "disableOffScreenTileLoading": disableOffScreenTileLoading});
   
   
   }
@@ -127,19 +130,13 @@ class MATileOverlay extends NSObject with MAAnnotation, MAOverlay {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::initWithURLTemplate', {"URLTemplate": URLTemplate, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::initWithURLTemplate', {"URLTemplate": URLTemplate, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   
@@ -150,11 +147,11 @@ class MATileOverlay extends NSObject with MAAnnotation, MAOverlay {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::loadTileAtPath_result', {"path": path, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::loadTileAtPath_result', {"path": path, "__this__": this});
   
   
     // handle native call
-    MethodChannel('void|NSData*#tileData,NSError*#error::Callback@$refId', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify')))
+    MethodChannel('void|NSData*#tileData,NSError*#error::Callback@$refId', kAmapMapFluttifyMethodCodec)
         .setMethodCallHandler((methodCall) async {
           try {
             final args = methodCall.arguments as Map;
@@ -166,24 +163,19 @@ class MATileOverlay extends NSObject with MAAnnotation, MAOverlay {
                 }
           
                 // handle the native call
-                if (result != null) result(TypeOpAmapMapFluttifyIOS((args['tileData'] as Object))?.as__<NSData>(), TypeOpAmapMapFluttifyIOS((args['error'] as Object))?.as__<NSError>());
+                if (result != null) result(AmapMapFluttifyIOSAs(args['tileData']), AmapMapFluttifyIOSAs(args['error']));
                 break;
               default:
+                throw MissingPluginException('方法${methodCall.method}未实现');
                 break;
             }
           } catch (e) {
             debugPrint(e);
-            throw e;
+            rethrow;
           }
         });
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   
@@ -194,19 +186,13 @@ class MATileOverlay extends NSObject with MAAnnotation, MAOverlay {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::cancelLoadOfTileAtPath', {"path": path, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::cancelLoadOfTileAtPath', {"path": path, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   //endregion
@@ -220,89 +206,75 @@ class MATileOverlay extends NSObject with MAAnnotation, MAOverlay {
 extension MATileOverlay_Batch on List<MATileOverlay> {
   //region getters
   Future<List<CGSize>> get_tileSize_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_tileSize_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => CGSize()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_tileSize_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<CGSize>(__result__))?.cast<CGSize>()?.toList();
   }
   
   Future<List<int>> get_minimumZ_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_minimumZ_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<int>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_minimumZ_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<int>()?.toList();
   }
   
   Future<List<int>> get_maximumZ_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_maximumZ_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<int>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_maximumZ_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<int>()?.toList();
   }
   
   Future<List<String>> get_URLTemplate_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_URLTemplate_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_URLTemplate_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<String>()?.toList();
   }
   
   Future<List<bool>> get_canReplaceMapContent_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_canReplaceMapContent_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<bool>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_canReplaceMapContent_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<bool>()?.toList();
   }
   
   Future<List<MAMapRect>> get_boundingMapRect_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_boundingMapRect_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAMapRect()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_boundingMapRect_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<MAMapRect>(__result__))?.cast<MAMapRect>()?.toList();
   }
   
   Future<List<bool>> get_disableOffScreenTileLoading_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MATileOverlay::get_disableOffScreenTileLoading_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<bool>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MATileOverlay::get_disableOffScreenTileLoading_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<bool>()?.toList();
   }
   
   //endregion
 
   //region setters
   Future<void> set_tileSize_batch(List<CGSize> tileSize) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MATileOverlay::set_tileSize_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "tileSize": tileSize[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_tileSize_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "tileSize": tileSize[__i__]}]);
   
   
   }
   
   Future<void> set_minimumZ_batch(List<int> minimumZ) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MATileOverlay::set_minimumZ_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "minimumZ": minimumZ[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_minimumZ_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "minimumZ": minimumZ[__i__]}]);
   
   
   }
   
   Future<void> set_maximumZ_batch(List<int> maximumZ) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MATileOverlay::set_maximumZ_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "maximumZ": maximumZ[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_maximumZ_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "maximumZ": maximumZ[__i__]}]);
   
   
   }
   
   Future<void> set_canReplaceMapContent_batch(List<bool> canReplaceMapContent) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MATileOverlay::set_canReplaceMapContent_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "canReplaceMapContent": canReplaceMapContent[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_canReplaceMapContent_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "canReplaceMapContent": canReplaceMapContent[__i__]}]);
   
   
   }
   
   Future<void> set_boundingMapRect_batch(List<MAMapRect> boundingMapRect) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MATileOverlay::set_boundingMapRect_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "boundingMapRect": boundingMapRect[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_boundingMapRect_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "boundingMapRect": boundingMapRect[__i__]}]);
   
   
   }
   
   Future<void> set_disableOffScreenTileLoading_batch(List<bool> disableOffScreenTileLoading) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MATileOverlay::set_disableOffScreenTileLoading_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "disableOffScreenTileLoading": disableOffScreenTileLoading[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::set_disableOffScreenTileLoading_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "disableOffScreenTileLoading": disableOffScreenTileLoading[__i__]}]);
   
   
   }
@@ -312,40 +284,24 @@ extension MATileOverlay_Batch on List<MATileOverlay> {
   //region methods
   
   Future<List<dynamic>> initWithURLTemplate_batch(List<String> URLTemplate) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::initWithURLTemplate_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"URLTemplate": URLTemplate[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::initWithURLTemplate_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"URLTemplate": URLTemplate[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => __result__).cast<dynamic>().toList();
   }
   
   
   Future<List<void>> cancelLoadOfTileAtPath_batch(List<MATileOverlayPath> path) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATileOverlay::cancelLoadOfTileAtPath_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"path": path[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MATileOverlay::cancelLoadOfTileAtPath_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"path": path[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => __result__).cast<void>().toList();
   }
   
   //endregion

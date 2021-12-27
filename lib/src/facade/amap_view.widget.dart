@@ -14,12 +14,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:foundation_fluttify/foundation_fluttify.dart';
+import 'package:uni_map_platform_interface/uni_map_platform_interface.dart';
 
-import 'enums.dart';
 import 'extensions.dart';
 import 'models.dart';
 
+part 'amap_controller.community.dart';
 part 'amap_controller.dart';
+part 'amap_controller.pro.dart';
 part 'map_delegates.dart';
 
 typedef _OnMapCreated = Future<void> Function(AmapController controller);

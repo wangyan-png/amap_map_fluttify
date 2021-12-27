@@ -11,7 +11,7 @@
 **专业版为付费插件, 如有需要请联系qq 382146139**<br/>
 **专业版为付费插件, 如有需要请联系qq 382146139**<br/>
 
-[专业版demo apk下载](https://github.com/fluttify-project/fluttify-project/raw/master/resources/amap_map_fluttify/%E5%9C%B0%E5%9B%BE-demo.apk)
+[专业版demo apk下载](https://github.com/fluttify-project/fluttify-project/blob/master/resources/amap_map_fluttify/%E5%9C%B0%E5%9B%BE-demo.apk)
 
 # Fluttify系列插件
 |  名称  | 描述 | 仓库 |
@@ -93,6 +93,9 @@ android {
 ```dart
 import 'package:amap_map_fluttify/amap_map_fluttify.dart';
 ```
+
+## 使用
+参考[wiki](https://github.com/fluttify-project/amap_map_fluttify/wiki).
 
 ## 社区
 | QQ群 |

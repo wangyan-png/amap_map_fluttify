@@ -24,32 +24,35 @@ class MAHeatMapGradient extends NSObject with NSCopying {
 
   //region creators
   static Future<MAHeatMapGradient> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAHeatMapGradient', {'init': init});
-    final object = MAHeatMapGradient()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAHeatMapGradient',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAHeatMapGradient>(__result__);
   }
   
   static Future<List<MAHeatMapGradient>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAHeatMapGradient', {'length': length, 'init': init});
-  
-    final List<MAHeatMapGradient> typedResult = resultBatch.map((result) => MAHeatMapGradient()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAHeatMapGradient',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAHeatMapGradient>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<List<UIColor>> get_colors() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAHeatMapGradient::get_colors", {'__this__': this});
-    return __result__ == null ? null : ((__result__ as List).cast<String>().map((__it__) => UIColor()..refId = __it__).toList());
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAHeatMapGradient::get_colors", {'__this__': this});
+    return (__result__ as List)?.map((it) => AmapMapFluttifyIOSAs<UIColor>(it))?.toList();
   }
   
   Future<List<num>> get_startPoints() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAHeatMapGradient::get_startPoints", {'__this__': this});
-    return __result__ == null ? null : ((__result__ as List).cast<num>());
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAHeatMapGradient::get_startPoints", {'__this__': this});
+    return (__result__ as List).cast<num>();
   }
   
   //endregion
@@ -67,19 +70,13 @@ class MAHeatMapGradient extends NSObject with NSCopying {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAHeatMapGradient::initWithColor_andWithStartPoints', {"colors": colors, "startPoints": startPoints, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAHeatMapGradient::initWithColor_andWithStartPoints', {"colors": colors, "startPoints": startPoints, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MAHeatMapGradient()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MAHeatMapGradient>(__result__);
   }
   
   //endregion
@@ -93,17 +90,13 @@ class MAHeatMapGradient extends NSObject with NSCopying {
 extension MAHeatMapGradient_Batch on List<MAHeatMapGradient> {
   //region getters
   Future<List<List<UIColor>>> get_colors_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAHeatMapGradient::get_colors_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => (__result__ as List).cast<String>().map((__it__) => UIColor()..refId = __it__).toList()).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAHeatMapGradient::get_colors_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => (__result__ as List)?.map((it) => AmapMapFluttifyIOSAs<UIColor>(it))?.toList())?.cast<List<UIColor>>()?.toList();
   }
   
   Future<List<List<num>>> get_startPoints_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAHeatMapGradient::get_startPoints_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<List<num>>().map((__result__) => (__result__ as List).cast<num>()).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAHeatMapGradient::get_startPoints_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => (__result__ as List).cast<num>())?.cast<List<num>>()?.toList();
   }
   
   //endregion
@@ -115,21 +108,13 @@ extension MAHeatMapGradient_Batch on List<MAHeatMapGradient> {
   //region methods
   
   Future<List<MAHeatMapGradient>> initWithColor_andWithStartPoints_batch(List<List<UIColor>> colors, List<List<num>> startPoints) async {
-    if (colors.length != startPoints.length) {
-      return Future.error('all args must have same length!');
-    }
+    assert(colors.length == startPoints.length);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAHeatMapGradient::initWithColor_andWithStartPoints_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"colors": colors[__i__], "startPoints": startPoints[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAHeatMapGradient::initWithColor_andWithStartPoints_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"colors": colors[__i__], "startPoints": startPoints[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAHeatMapGradient()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MAHeatMapGradient>(__result__)).cast<MAHeatMapGradient>().toList();
   }
   
   //endregion

@@ -24,94 +24,97 @@ class MAPolylineRenderer extends MAOverlayPathRenderer  {
 
   //region creators
   static Future<MAPolylineRenderer> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAPolylineRenderer', {'init': init});
-    final object = MAPolylineRenderer()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAPolylineRenderer',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAPolylineRenderer>(__result__);
   }
   
   static Future<List<MAPolylineRenderer>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAPolylineRenderer', {'length': length, 'init': init});
-  
-    final List<MAPolylineRenderer> typedResult = resultBatch.map((result) => MAPolylineRenderer()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAPolylineRenderer',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAPolylineRenderer>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<MAPolyline> get_polyline() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_polyline", {'__this__': this});
-    return __result__ == null ? null : (MAPolyline()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_polyline", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAPolyline>(__result__);
   }
   
   Future<bool> get_is3DArrowLine() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_is3DArrowLine", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_is3DArrowLine", {'__this__': this});
+    return __result__;
   }
   
   Future<UIColor> get_sideColor() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_sideColor", {'__this__': this});
-    return __result__ == null ? null : (UIColor()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_sideColor", {'__this__': this});
+    return AmapMapFluttifyIOSAs<UIColor>(__result__);
   }
   
   Future<bool> get_userInteractionEnabled() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_userInteractionEnabled", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_userInteractionEnabled", {'__this__': this});
+    return __result__;
   }
   
   Future<double> get_hitTestInset() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_hitTestInset", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_hitTestInset", {'__this__': this});
+    return __result__;
   }
   
   Future<bool> get_showRangeEnabled() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_showRangeEnabled", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_showRangeEnabled", {'__this__': this});
+    return __result__;
   }
   
   Future<MAPathShowRange> get_showRange() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_showRange", {'__this__': this});
-    return __result__ == null ? null : (MAPathShowRange()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_showRange", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAPathShowRange>(__result__);
   }
   
   //endregion
 
   //region setters
   Future<void> set_is3DArrowLine(bool is3DArrowLine) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::set_is3DArrowLine', <String, dynamic>{'__this__': this, "is3DArrowLine": is3DArrowLine});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_is3DArrowLine', <String, dynamic>{'__this__': this, "is3DArrowLine": is3DArrowLine});
   
   
   }
   
   Future<void> set_sideColor(UIColor sideColor) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::set_sideColor', <String, dynamic>{'__this__': this, "sideColor": sideColor});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_sideColor', <String, dynamic>{'__this__': this, "sideColor": sideColor});
   
   
   }
   
   Future<void> set_userInteractionEnabled(bool userInteractionEnabled) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::set_userInteractionEnabled', <String, dynamic>{'__this__': this, "userInteractionEnabled": userInteractionEnabled});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_userInteractionEnabled', <String, dynamic>{'__this__': this, "userInteractionEnabled": userInteractionEnabled});
   
   
   }
   
   Future<void> set_hitTestInset(double hitTestInset) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::set_hitTestInset', <String, dynamic>{'__this__': this, "hitTestInset": hitTestInset});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_hitTestInset', <String, dynamic>{'__this__': this, "hitTestInset": hitTestInset});
   
   
   }
   
   Future<void> set_showRangeEnabled(bool showRangeEnabled) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::set_showRangeEnabled', <String, dynamic>{'__this__': this, "showRangeEnabled": showRangeEnabled});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_showRangeEnabled', <String, dynamic>{'__this__': this, "showRangeEnabled": showRangeEnabled});
   
   
   }
   
   Future<void> set_showRange(MAPathShowRange showRange) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::set_showRange', <String, dynamic>{'__this__': this, "showRange": showRange});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_showRange', <String, dynamic>{'__this__': this, "showRange": showRange});
   
   
   }
@@ -127,19 +130,13 @@ class MAPolylineRenderer extends MAOverlayPathRenderer  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::initWithPolyline', {"polyline": polyline, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::initWithPolyline', {"polyline": polyline, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MAPolylineRenderer()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MAPolylineRenderer>(__result__);
   }
   
   //endregion
@@ -153,89 +150,75 @@ class MAPolylineRenderer extends MAOverlayPathRenderer  {
 extension MAPolylineRenderer_Batch on List<MAPolylineRenderer> {
   //region getters
   Future<List<MAPolyline>> get_polyline_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_polyline_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAPolyline()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_polyline_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<MAPolyline>(__result__))?.cast<MAPolyline>()?.toList();
   }
   
   Future<List<bool>> get_is3DArrowLine_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_is3DArrowLine_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<bool>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_is3DArrowLine_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<bool>()?.toList();
   }
   
   Future<List<UIColor>> get_sideColor_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_sideColor_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => UIColor()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_sideColor_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<UIColor>(__result__))?.cast<UIColor>()?.toList();
   }
   
   Future<List<bool>> get_userInteractionEnabled_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_userInteractionEnabled_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<bool>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_userInteractionEnabled_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<bool>()?.toList();
   }
   
   Future<List<double>> get_hitTestInset_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_hitTestInset_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<double>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_hitTestInset_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<double>()?.toList();
   }
   
   Future<List<bool>> get_showRangeEnabled_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_showRangeEnabled_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<bool>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_showRangeEnabled_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<bool>()?.toList();
   }
   
   Future<List<MAPathShowRange>> get_showRange_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolylineRenderer::get_showRange_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAPathShowRange()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolylineRenderer::get_showRange_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<MAPathShowRange>(__result__))?.cast<MAPathShowRange>()?.toList();
   }
   
   //endregion
 
   //region setters
   Future<void> set_is3DArrowLine_batch(List<bool> is3DArrowLine) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPolylineRenderer::set_is3DArrowLine_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "is3DArrowLine": is3DArrowLine[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_is3DArrowLine_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "is3DArrowLine": is3DArrowLine[__i__]}]);
   
   
   }
   
   Future<void> set_sideColor_batch(List<UIColor> sideColor) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPolylineRenderer::set_sideColor_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "sideColor": sideColor[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_sideColor_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "sideColor": sideColor[__i__]}]);
   
   
   }
   
   Future<void> set_userInteractionEnabled_batch(List<bool> userInteractionEnabled) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPolylineRenderer::set_userInteractionEnabled_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "userInteractionEnabled": userInteractionEnabled[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_userInteractionEnabled_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "userInteractionEnabled": userInteractionEnabled[__i__]}]);
   
   
   }
   
   Future<void> set_hitTestInset_batch(List<double> hitTestInset) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPolylineRenderer::set_hitTestInset_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "hitTestInset": hitTestInset[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_hitTestInset_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "hitTestInset": hitTestInset[__i__]}]);
   
   
   }
   
   Future<void> set_showRangeEnabled_batch(List<bool> showRangeEnabled) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPolylineRenderer::set_showRangeEnabled_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "showRangeEnabled": showRangeEnabled[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_showRangeEnabled_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "showRangeEnabled": showRangeEnabled[__i__]}]);
   
   
   }
   
   Future<void> set_showRange_batch(List<MAPathShowRange> showRange) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPolylineRenderer::set_showRange_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "showRange": showRange[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::set_showRange_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "showRange": showRange[__i__]}]);
   
   
   }
@@ -245,21 +228,13 @@ extension MAPolylineRenderer_Batch on List<MAPolylineRenderer> {
   //region methods
   
   Future<List<MAPolylineRenderer>> initWithPolyline_batch(List<MAPolyline> polyline) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolylineRenderer::initWithPolyline_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"polyline": polyline[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAPolylineRenderer::initWithPolyline_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"polyline": polyline[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAPolylineRenderer()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MAPolylineRenderer>(__result__)).cast<MAPolylineRenderer>().toList();
   }
   
   //endregion

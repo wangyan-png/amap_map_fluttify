@@ -4,10 +4,10 @@
 
 package me.yohom.amap_map_fluttify;
 
-import android.content.Context;
-import android.view.View;
-import android.util.Log;
 import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
 
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.model.CameraPosition;
@@ -15,20 +15,17 @@ import com.amap.api.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashMap;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.common.StandardMethodCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
-
 import me.yohom.foundation_fluttify.core.FluttifyMessageCodec;
 
-import static me.yohom.foundation_fluttify.FoundationFluttifyPluginKt.getHEAP;
 import static me.yohom.foundation_fluttify.FoundationFluttifyPluginKt.getEnableLog;
+import static me.yohom.foundation_fluttify.FoundationFluttifyPluginKt.getHEAP;
 
 @SuppressWarnings("ALL")
 class TextureMapViewFactory extends PlatformViewFactory {
@@ -332,7 +329,7 @@ class TextureMapViewFactory extends PlatformViewFactory {
 
         // 同时存放viewId和refId的对象, 供后续viewId转refId使用
         getHEAP().put(String.valueOf(Integer.MAX_VALUE - id), view);
-        getHEAP().put(String.valueOf(System.identityHashCode(view)), view);
+        getHEAP().put("com.amap.api.maps.TextureMapView:" + String.valueOf(System.identityHashCode(view)), view);
         return new PlatformView() {
 
             // add to HEAP

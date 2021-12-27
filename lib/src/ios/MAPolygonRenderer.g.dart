@@ -24,27 +24,30 @@ class MAPolygonRenderer extends MAOverlayPathRenderer  {
 
   //region creators
   static Future<MAPolygonRenderer> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAPolygonRenderer', {'init': init});
-    final object = MAPolygonRenderer()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAPolygonRenderer',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAPolygonRenderer>(__result__);
   }
   
   static Future<List<MAPolygonRenderer>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAPolygonRenderer', {'length': length, 'init': init});
-  
-    final List<MAPolygonRenderer> typedResult = resultBatch.map((result) => MAPolygonRenderer()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAPolygonRenderer',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAPolygonRenderer>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<MAPolygon> get_polygon() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolygonRenderer::get_polygon", {'__this__': this});
-    return __result__ == null ? null : (MAPolygon()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPolygonRenderer::get_polygon", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAPolygon>(__result__);
   }
   
   //endregion
@@ -62,19 +65,13 @@ class MAPolygonRenderer extends MAOverlayPathRenderer  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolygonRenderer::initWithPolygon', {"polygon": polygon, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAPolygonRenderer::initWithPolygon', {"polygon": polygon, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MAPolygonRenderer()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MAPolygonRenderer>(__result__);
   }
   
   //endregion
@@ -88,10 +85,8 @@ class MAPolygonRenderer extends MAOverlayPathRenderer  {
 extension MAPolygonRenderer_Batch on List<MAPolygonRenderer> {
   //region getters
   Future<List<MAPolygon>> get_polygon_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPolygonRenderer::get_polygon_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAPolygon()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPolygonRenderer::get_polygon_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<MAPolygon>(__result__))?.cast<MAPolygon>()?.toList();
   }
   
   //endregion
@@ -103,21 +98,13 @@ extension MAPolygonRenderer_Batch on List<MAPolygonRenderer> {
   //region methods
   
   Future<List<MAPolygonRenderer>> initWithPolygon_batch(List<MAPolygon> polygon) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPolygonRenderer::initWithPolygon_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"polygon": polygon[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAPolygonRenderer::initWithPolygon_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"polygon": polygon[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAPolygonRenderer()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MAPolygonRenderer>(__result__)).cast<MAPolygonRenderer>().toList();
   }
   
   //endregion

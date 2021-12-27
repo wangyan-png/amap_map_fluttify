@@ -24,45 +24,48 @@ class MAPathShowRange extends NSObject  {
 
   //region creators
   static Future<MAPathShowRange> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAPathShowRange', {'init': init});
-    final object = MAPathShowRange()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAPathShowRange',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAPathShowRange>(__result__);
   }
   
   static Future<List<MAPathShowRange>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAPathShowRange', {'length': length, 'init': init});
-  
-    final List<MAPathShowRange> typedResult = resultBatch.map((result) => MAPathShowRange()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAPathShowRange',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAPathShowRange>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<double> get_begin() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPathShowRange::get_begin", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPathShowRange::get_begin", {'__this__': this});
+    return __result__;
   }
   
   Future<double> get_end() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPathShowRange::get_end", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAPathShowRange::get_end", {'__this__': this});
+    return __result__;
   }
   
   //endregion
 
   //region setters
   Future<void> set_begin(double begin) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPathShowRange::set_begin', <String, dynamic>{'__this__': this, "begin": begin});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPathShowRange::set_begin', <String, dynamic>{'__this__': this, "begin": begin});
   
   
   }
   
   Future<void> set_end(double end) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAPathShowRange::set_end', <String, dynamic>{'__this__': this, "end": end});
+    await kAmapMapFluttifyChannel.invokeMethod('MAPathShowRange::set_end', <String, dynamic>{'__this__': this, "end": end});
   
   
   }
@@ -82,30 +85,26 @@ class MAPathShowRange extends NSObject  {
 extension MAPathShowRange_Batch on List<MAPathShowRange> {
   //region getters
   Future<List<double>> get_begin_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPathShowRange::get_begin_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<double>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPathShowRange::get_begin_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<double>()?.toList();
   }
   
   Future<List<double>> get_end_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAPathShowRange::get_end_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<double>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAPathShowRange::get_end_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<double>()?.toList();
   }
   
   //endregion
 
   //region setters
   Future<void> set_begin_batch(List<double> begin) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPathShowRange::set_begin_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "begin": begin[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPathShowRange::set_begin_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "begin": begin[__i__]}]);
   
   
   }
   
   Future<void> set_end_batch(List<double> end) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAPathShowRange::set_end_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "end": end[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAPathShowRange::set_end_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "end": end[__i__]}]);
   
   
   }

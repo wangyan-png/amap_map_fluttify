@@ -14,7 +14,7 @@ class DrawPolygonScreen extends StatefulWidget {
 
 class _DrawPolygonScreenState extends State<DrawPolygonScreen> with NextLatLng {
   AmapController _controller;
-  List<Polygon> _polygonList = [];
+  List<IPolygon> _polygonList = [];
 
   @override
   Widget build(BuildContext context) {

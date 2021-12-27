@@ -24,45 +24,48 @@ class MACoordinateSpan extends NSObject  {
 
   //region creators
   static Future<MACoordinateSpan> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMACoordinateSpan', {'init': init});
-    final object = MACoordinateSpan()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMACoordinateSpan',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MACoordinateSpan>(__result__);
   }
   
   static Future<List<MACoordinateSpan>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMACoordinateSpan', {'length': length, 'init': init});
-  
-    final List<MACoordinateSpan> typedResult = resultBatch.map((result) => MACoordinateSpan()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMACoordinateSpan',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MACoordinateSpan>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<double> get_latitudeDelta() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MACoordinateSpan::get_latitudeDelta", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MACoordinateSpan::get_latitudeDelta", {'__this__': this});
+    return __result__;
   }
   
   Future<double> get_longitudeDelta() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MACoordinateSpan::get_longitudeDelta", {'__this__': this});
-    return __result__ == null ? null : (__result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MACoordinateSpan::get_longitudeDelta", {'__this__': this});
+    return __result__;
   }
   
   //endregion
 
   //region setters
   Future<void> set_latitudeDelta(double latitudeDelta) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MACoordinateSpan::set_latitudeDelta', <String, dynamic>{'__this__': this, "latitudeDelta": latitudeDelta});
+    await kAmapMapFluttifyChannel.invokeMethod('MACoordinateSpan::set_latitudeDelta', <String, dynamic>{'__this__': this, "latitudeDelta": latitudeDelta});
   
   
   }
   
   Future<void> set_longitudeDelta(double longitudeDelta) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MACoordinateSpan::set_longitudeDelta', <String, dynamic>{'__this__': this, "longitudeDelta": longitudeDelta});
+    await kAmapMapFluttifyChannel.invokeMethod('MACoordinateSpan::set_longitudeDelta', <String, dynamic>{'__this__': this, "longitudeDelta": longitudeDelta});
   
   
   }
@@ -82,30 +85,26 @@ class MACoordinateSpan extends NSObject  {
 extension MACoordinateSpan_Batch on List<MACoordinateSpan> {
   //region getters
   Future<List<double>> get_latitudeDelta_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MACoordinateSpan::get_latitudeDelta_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<double>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MACoordinateSpan::get_latitudeDelta_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<double>()?.toList();
   }
   
   Future<List<double>> get_longitudeDelta_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MACoordinateSpan::get_longitudeDelta_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<double>().map((__result__) => __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MACoordinateSpan::get_longitudeDelta_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => __result__)?.cast<double>()?.toList();
   }
   
   //endregion
 
   //region setters
   Future<void> set_latitudeDelta_batch(List<double> latitudeDelta) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MACoordinateSpan::set_latitudeDelta_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "latitudeDelta": latitudeDelta[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MACoordinateSpan::set_latitudeDelta_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "latitudeDelta": latitudeDelta[__i__]}]);
   
   
   }
   
   Future<void> set_longitudeDelta_batch(List<double> longitudeDelta) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MACoordinateSpan::set_longitudeDelta_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "longitudeDelta": longitudeDelta[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MACoordinateSpan::set_longitudeDelta_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "longitudeDelta": longitudeDelta[__i__]}]);
   
   
   }

@@ -46,12 +46,11 @@ class _MAMapView_iOSState extends State<MAMapView_iOS> {
       Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
     };
 
-    final messageCodec = FluttifyMessageCodec('amap_map_fluttify');
     return UiKitView(
       viewType: 'me.yohom/MAMapView',
       gestureRecognizers: gestureRecognizers,
       onPlatformViewCreated: _onViewCreated,
-      creationParamsCodec: messageCodec,
+      creationParamsCodec: kAmapMapFluttifyMessageCodec,
       creationParams: widget.params,
     );
   }
@@ -60,7 +59,7 @@ class _MAMapView_iOSState extends State<MAMapView_iOS> {
     // 碰到一个对象返回的hashCode为0的情况, 造成和这个id冲突了, 这里用一个magic number避免一下
     // 把viewId转换为refId再使用, 使其与其他对象统一
     final refId = await viewId2RefId((2147483647 - id).toString());
-    _controller = MAMapView()..refId = refId;
+    _controller = MAMapView()..refId = 'MAMapView:$refId';
     if (widget.onViewCreated != null) {
       widget.onViewCreated(_controller);
     }
@@ -69,7 +68,7 @@ class _MAMapView_iOSState extends State<MAMapView_iOS> {
   @override
   void dispose() {
     if (widget.onDispose != null) {
-      widget.onDispose().then((_) => _controller.release__());
+      widget.onDispose().whenComplete(() => _controller.release__());
     } else {
       _controller.release__();
     }

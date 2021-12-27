@@ -24,19 +24,22 @@ class MAParticleRandomVelocityGenerate extends NSObject with MAParticleVelocityG
 
   //region creators
   static Future<MAParticleRandomVelocityGenerate> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAParticleRandomVelocityGenerate', {'init': init});
-    final object = MAParticleRandomVelocityGenerate()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAParticleRandomVelocityGenerate',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAParticleRandomVelocityGenerate>(__result__);
   }
   
   static Future<List<MAParticleRandomVelocityGenerate>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAParticleRandomVelocityGenerate', {'length': length, 'init': init});
-  
-    final List<MAParticleRandomVelocityGenerate> typedResult = resultBatch.map((result) => MAParticleRandomVelocityGenerate()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAParticleRandomVelocityGenerate',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAParticleRandomVelocityGenerate>(it))
+        .toList();
   }
   
   //endregion
@@ -58,19 +61,13 @@ class MAParticleRandomVelocityGenerate extends NSObject with MAParticleVelocityG
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleRandomVelocityGenerate::initWithBoundaryValueX1_Y1_Z1_X2_Y2_Z2', {"x1": x1, "y1": y1, "z1": z1, "x2": x2, "y2": y2, "z2": z2, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAParticleRandomVelocityGenerate::initWithBoundaryValueX1_Y1_Z1_X2_Y2_Z2', {"x1": x1, "y1": y1, "z1": z1, "x2": x2, "y2": y2, "z2": z2, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MAParticleRandomVelocityGenerate()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MAParticleRandomVelocityGenerate>(__result__);
   }
   
   //endregion
@@ -93,21 +90,13 @@ extension MAParticleRandomVelocityGenerate_Batch on List<MAParticleRandomVelocit
   //region methods
   
   Future<List<MAParticleRandomVelocityGenerate>> initWithBoundaryValueX1_Y1_Z1_X2_Y2_Z2_batch(List<double> x1, List<double> y1, List<double> z1, List<double> x2, List<double> y2, List<double> z2) async {
-    if (x1.length != y1.length || y1.length != z1.length || z1.length != x2.length || x2.length != y2.length || y2.length != z2.length) {
-      return Future.error('all args must have same length!');
-    }
+    assert(x1.length == y1.length && y1.length == z1.length && z1.length == x2.length && x2.length == y2.length && y2.length == z2.length);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleRandomVelocityGenerate::initWithBoundaryValueX1_Y1_Z1_X2_Y2_Z2_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"x1": x1[__i__], "y1": y1[__i__], "z1": z1[__i__], "x2": x2[__i__], "y2": y2[__i__], "z2": z2[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAParticleRandomVelocityGenerate::initWithBoundaryValueX1_Y1_Z1_X2_Y2_Z2_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"x1": x1[__i__], "y1": y1[__i__], "z1": z1[__i__], "x2": x2[__i__], "y2": y2[__i__], "z2": z2[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAParticleRandomVelocityGenerate()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MAParticleRandomVelocityGenerate>(__result__)).cast<MAParticleRandomVelocityGenerate>().toList();
   }
   
   //endregion

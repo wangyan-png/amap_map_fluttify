@@ -23,13 +23,13 @@ mixin MAOverlay on MAAnnotation {
   final String tag__ = 'amap_map_fluttify';
 
   Future<CLLocationCoordinate2D> get_coordinate() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAOverlay::get_coordinate", {'__this__': this});
-    return __result__ == null ? null : (CLLocationCoordinate2D()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAOverlay::get_coordinate", {'__this__': this});
+    return AmapMapFluttifyIOSAs<CLLocationCoordinate2D>(__result__);
   }
   
   Future<MAMapRect> get_boundingMapRect() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAOverlay::get_boundingMapRect", {'__this__': this});
-    return __result__ == null ? null : (MAMapRect()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAOverlay::get_boundingMapRect", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAMapRect>(__result__);
   }
   
 

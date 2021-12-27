@@ -24,19 +24,22 @@ class MAParticleOverlayOptionsFactory extends NSObject  {
 
   //region creators
   static Future<MAParticleOverlayOptionsFactory> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAParticleOverlayOptionsFactory', {'init': init});
-    final object = MAParticleOverlayOptionsFactory()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAParticleOverlayOptionsFactory',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAParticleOverlayOptionsFactory>(__result__);
   }
   
   static Future<List<MAParticleOverlayOptionsFactory>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAParticleOverlayOptionsFactory', {'length': length, 'init': init});
-  
-    final List<MAParticleOverlayOptionsFactory> typedResult = resultBatch.map((result) => MAParticleOverlayOptionsFactory()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAParticleOverlayOptionsFactory',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAParticleOverlayOptionsFactory>(it))
+        .toList();
   }
   
   //endregion
@@ -58,19 +61,13 @@ class MAParticleOverlayOptionsFactory extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleOverlayOptionsFactory::particleOverlayOptionsWithType', {"particleType": particleType.toValue()});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAParticleOverlayOptionsFactory::particleOverlayOptionsWithType', {"particleType": particleType.toValue()});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = (__result__ as List).cast<String>().map((__it__) => MAParticleOverlayOptions()..refId = __it__).toList();
-      return __return__;
-    }
+    return (__result__ as List)?.map((it) => AmapMapFluttifyIOSAs<MAParticleOverlayOptions>(it))?.toList();
   }
   
   //endregion
@@ -93,21 +90,13 @@ extension MAParticleOverlayOptionsFactory_Batch on List<MAParticleOverlayOptions
   //region methods
   
   static Future<List<List<MAParticleOverlayOptions>>> particleOverlayOptionsWithType_batch(List<MAParticleOverlayType> particleType) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleOverlayOptionsFactory::particleOverlayOptionsWithType_batch', [for (int __i__ = 0; __i__ < particleType.length; __i__++) {"particleType": particleType[__i__].toValue()}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAParticleOverlayOptionsFactory::particleOverlayOptionsWithType_batch', [for (int __i__ = 0; __i__ < particleType.length; __i__++) {"particleType": particleType[__i__].toValue()}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => (__result__ as List).cast<String>().map((__it__) => MAParticleOverlayOptions()..refId = __it__).toList()).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => (__result__ as List)?.map((it) => AmapMapFluttifyIOSAs<MAParticleOverlayOptions>(it))?.toList()).cast<List<MAParticleOverlayOptions>>().toList();
   }
   
   //endregion

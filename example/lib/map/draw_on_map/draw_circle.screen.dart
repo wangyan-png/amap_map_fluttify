@@ -1,5 +1,4 @@
 import 'package:amap_map_fluttify/amap_map_fluttify.dart';
-import 'package:amap_map_fluttify_example/utils/misc.dart';
 import 'package:amap_map_fluttify_example/utils/next_latlng.dart';
 import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ class DrawCircleScreen extends StatefulWidget {
 
 class _DrawCircleScreenState extends State<DrawCircleScreen> with NextLatLng {
   AmapController _controller;
-  List<Circle> _circleList = [];
+  List<ICircle> _circleList = [];
 
   @override
   Widget build(BuildContext context) {

@@ -24,19 +24,22 @@ class MATraceManager extends NSObject  {
 
   //region creators
   static Future<MATraceManager> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMATraceManager', {'init': init});
-    final object = MATraceManager()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMATraceManager',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MATraceManager>(__result__);
   }
   
   static Future<List<MATraceManager>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMATraceManager', {'length': length, 'init': init});
-  
-    final List<MATraceManager> typedResult = resultBatch.map((result) => MATraceManager()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMATraceManager',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MATraceManager>(it))
+        .toList();
   }
   
   //endregion
@@ -47,9 +50,9 @@ class MATraceManager extends NSObject  {
 
   //region setters
   Future<void> set_delegate(MATraceDelegate delegate) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::set_delegate', <String, dynamic>{'__this__': this, });
+    await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::set_delegate', <String, dynamic>{'__this__': this, });
   
-    MethodChannel('MATraceDelegate::Callback', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify')))
+    MethodChannel('MATraceDelegate::Callback', kAmapMapFluttifyMethodCodec)
       .setMethodCallHandler((methodCall) async {
         try {
           final args = methodCall.arguments as Map;
@@ -61,7 +64,7 @@ class MATraceManager extends NSObject  {
               }
           
               // handle the native call
-              delegate?.traceManager_didTrace_correct_distance_withError(TypeOpAmapMapFluttifyIOS((args['manager'] as Object))?.as__<MATraceManager>(), (args['locations'] as List).cast<String>().map((__it__) => TypeOpAmapMapFluttifyIOS(__it__).as__<CLLocation>()).toList(), (args['tracePoints'] as List).cast<String>().map((__it__) => TypeOpAmapMapFluttifyIOS(__it__).as__<MATracePoint>()).toList(), args['distance'], TypeOpAmapMapFluttifyIOS((args['error'] as Object))?.as__<NSError>());
+              delegate?.traceManager_didTrace_correct_distance_withError(AmapMapFluttifyIOSAs(args['manager']), (args['locations'] as List)?.map((it) => AmapMapFluttifyIOSAs<CLLocation>(it))?.toList(), (args['tracePoints'] as List)?.map((it) => AmapMapFluttifyIOSAs<MATracePoint>(it))?.toList(), args['distance'], AmapMapFluttifyIOSAs(args['error']));
               break;
             case 'Callback::MATraceDelegate::mapViewRequireLocationAuth':
               // print log
@@ -70,14 +73,15 @@ class MATraceManager extends NSObject  {
               }
           
               // handle the native call
-              delegate?.mapViewRequireLocationAuth(TypeOpAmapMapFluttifyIOS((args['locationManager'] as Object))?.as__<CLLocationManager>());
+              delegate?.mapViewRequireLocationAuth(AmapMapFluttifyIOSAs(args['locationManager']));
               break;
             default:
+              throw MissingPluginException('方法${methodCall.method}未实现');
               break;
           }
         } catch (e) {
           debugPrint(e);
-          throw e;
+          rethrow;
         }
       });
   }
@@ -93,19 +97,13 @@ class MATraceManager extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::sharedInstance', );
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::sharedInstance', );
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MATraceManager()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MATraceManager>(__result__);
   }
   
   
@@ -116,11 +114,11 @@ class MATraceManager extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::queryProcessedTraceWith_type_processingCallback_finishCallback_failedCallback', {"locations": locations, "type": type.toValue(), "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::queryProcessedTraceWith_type_processingCallback_finishCallback_failedCallback', {"locations": locations, "type": type.toValue(), "__this__": this});
   
   
     // handle native call
-    MethodChannel('MAProcessingCallback::Callback@$refId', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify')))
+    MethodChannel('MAProcessingCallback::Callback@$refId', kAmapMapFluttifyMethodCodec)
         .setMethodCallHandler((methodCall) async {
           try {
             final args = methodCall.arguments as Map;
@@ -132,17 +130,18 @@ class MATraceManager extends NSObject  {
                 }
           
                 // handle the native call
-                if (processingCallback != null) processingCallback(args['index'], (args['points'] as List).cast<String>().map((__it__) => TypeOpAmapMapFluttifyIOS(__it__).as__<MATracePoint>()).toList());
+                if (processingCallback != null) processingCallback(args['index'], (args['points'] as List)?.map((it) => AmapMapFluttifyIOSAs<MATracePoint>(it))?.toList());
                 break;
               default:
+                throw MissingPluginException('方法${methodCall.method}未实现');
                 break;
             }
           } catch (e) {
             debugPrint(e);
-            throw e;
+            rethrow;
           }
         });
-    MethodChannel('MAFinishCallback::Callback@$refId', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify')))
+    MethodChannel('MAFinishCallback::Callback@$refId', kAmapMapFluttifyMethodCodec)
         .setMethodCallHandler((methodCall) async {
           try {
             final args = methodCall.arguments as Map;
@@ -154,17 +153,18 @@ class MATraceManager extends NSObject  {
                 }
           
                 // handle the native call
-                if (finishCallback != null) finishCallback((args['points'] as List).cast<String>().map((__it__) => TypeOpAmapMapFluttifyIOS(__it__).as__<MATracePoint>()).toList(), args['distance']);
+                if (finishCallback != null) finishCallback((args['points'] as List)?.map((it) => AmapMapFluttifyIOSAs<MATracePoint>(it))?.toList(), args['distance']);
                 break;
               default:
+                throw MissingPluginException('方法${methodCall.method}未实现');
                 break;
             }
           } catch (e) {
             debugPrint(e);
-            throw e;
+            rethrow;
           }
         });
-    MethodChannel('MAFailedCallback::Callback@$refId', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify')))
+    MethodChannel('MAFailedCallback::Callback@$refId', kAmapMapFluttifyMethodCodec)
         .setMethodCallHandler((methodCall) async {
           try {
             final args = methodCall.arguments as Map;
@@ -179,21 +179,16 @@ class MATraceManager extends NSObject  {
                 if (failedCallback != null) failedCallback(args['errorCode'], args['errorDesc']);
                 break;
               default:
+                throw MissingPluginException('方法${methodCall.method}未实现');
                 break;
             }
           } catch (e) {
             debugPrint(e);
-            throw e;
+            rethrow;
           }
         });
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = NSOperation()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<NSOperation>(__result__);
   }
   
   @deprecated
@@ -204,11 +199,11 @@ class MATraceManager extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::startTraceWith', {"__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::startTraceWith', {"__this__": this});
   
   
     // handle native call
-    MethodChannel('MATraceLocationCallback::Callback@$refId', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify')))
+    MethodChannel('MATraceLocationCallback::Callback@$refId', kAmapMapFluttifyMethodCodec)
         .setMethodCallHandler((methodCall) async {
           try {
             final args = methodCall.arguments as Map;
@@ -220,24 +215,19 @@ class MATraceManager extends NSObject  {
                 }
           
                 // handle the native call
-                if (locCallback != null) locCallback((args['locations'] as List).cast<String>().map((__it__) => TypeOpAmapMapFluttifyIOS(__it__).as__<CLLocation>()).toList(), (args['tracePoints'] as List).cast<String>().map((__it__) => TypeOpAmapMapFluttifyIOS(__it__).as__<MATracePoint>()).toList(), args['distance'], TypeOpAmapMapFluttifyIOS((args['error'] as Object))?.as__<NSError>());
+                if (locCallback != null) locCallback((args['locations'] as List)?.map((it) => AmapMapFluttifyIOSAs<CLLocation>(it))?.toList(), (args['tracePoints'] as List)?.map((it) => AmapMapFluttifyIOSAs<MATracePoint>(it))?.toList(), args['distance'], AmapMapFluttifyIOSAs(args['error']));
                 break;
               default:
+                throw MissingPluginException('方法${methodCall.method}未实现');
                 break;
             }
           } catch (e) {
             debugPrint(e);
-            throw e;
+            rethrow;
           }
         });
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   @deprecated
@@ -248,19 +238,13 @@ class MATraceManager extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::stopTrace', {"__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::stopTrace', {"__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   
@@ -271,19 +255,13 @@ class MATraceManager extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::start', {"__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::start', {"__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   
@@ -294,19 +272,13 @@ class MATraceManager extends NSObject  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::stop', {"__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::stop', {"__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = __result__;
-      return __return__;
-    }
+    return __result__;
   }
   
   //endregion
@@ -329,78 +301,46 @@ extension MATraceManager_Batch on List<MATraceManager> {
   //region methods
   
   static Future<List<MATraceManager>> sharedInstance_batch() async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::sharedInstance_batch', );
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::sharedInstance_batch', );
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MATraceManager()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MATraceManager>(__result__)).cast<MATraceManager>().toList();
   }
   
   @deprecated
   Future<List<void>> stopTrace_batch() async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::stopTrace_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::stopTrace_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => __result__).cast<void>().toList();
   }
   
   
   Future<List<void>> start_batch() async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::start_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::start_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => __result__).cast<void>().toList();
   }
   
   
   Future<List<void>> stop_batch() async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MATraceManager::stop_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MATraceManager::stop_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => __result__).cast<void>().toList();
   }
   
   //endregion

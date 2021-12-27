@@ -1,12 +1,7 @@
 import 'package:amap_map_fluttify/amap_map_fluttify.dart';
 import 'package:flutter/material.dart';
 
-class OfflineManagerScreen extends StatefulWidget {
-  @override
-  _OfflineManagerScreenState createState() => _OfflineManagerScreenState();
-}
-
-class _OfflineManagerScreenState extends State<OfflineManagerScreen> {
+class OfflineManagerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

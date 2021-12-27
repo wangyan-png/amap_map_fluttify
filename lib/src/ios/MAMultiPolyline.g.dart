@@ -24,34 +24,37 @@ class MAMultiPolyline extends MAPolyline with MAOverlay, MAAnnotation {
 
   //region creators
   static Future<MAMultiPolyline> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAMultiPolyline', {'init': init});
-    final object = MAMultiPolyline()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAMultiPolyline',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAMultiPolyline>(__result__);
   }
   
   static Future<List<MAMultiPolyline>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAMultiPolyline', {'length': length, 'init': init});
-  
-    final List<MAMultiPolyline> typedResult = resultBatch.map((result) => MAMultiPolyline()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAMultiPolyline',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAMultiPolyline>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<List<num>> get_drawStyleIndexes() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAMultiPolyline::get_drawStyleIndexes", {'__this__': this});
-    return __result__ == null ? null : ((__result__ as List).cast<num>());
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAMultiPolyline::get_drawStyleIndexes", {'__this__': this});
+    return (__result__ as List).cast<num>();
   }
   
   //endregion
 
   //region setters
   Future<void> set_drawStyleIndexes(List<num> drawStyleIndexes) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAMultiPolyline::set_drawStyleIndexes', <String, dynamic>{'__this__': this, "drawStyleIndexes": drawStyleIndexes});
+    await kAmapMapFluttifyChannel.invokeMethod('MAMultiPolyline::set_drawStyleIndexes', <String, dynamic>{'__this__': this, "drawStyleIndexes": drawStyleIndexes});
   
   
   }
@@ -71,17 +74,15 @@ class MAMultiPolyline extends MAPolyline with MAOverlay, MAAnnotation {
 extension MAMultiPolyline_Batch on List<MAMultiPolyline> {
   //region getters
   Future<List<List<num>>> get_drawStyleIndexes_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAMultiPolyline::get_drawStyleIndexes_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<List<num>>().map((__result__) => (__result__ as List).cast<num>()).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAMultiPolyline::get_drawStyleIndexes_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => (__result__ as List).cast<num>())?.cast<List<num>>()?.toList();
   }
   
   //endregion
 
   //region setters
   Future<void> set_drawStyleIndexes_batch(List<List<num>> drawStyleIndexes) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAMultiPolyline::set_drawStyleIndexes_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "drawStyleIndexes": drawStyleIndexes[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAMultiPolyline::set_drawStyleIndexes_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "drawStyleIndexes": drawStyleIndexes[__i__]}]);
   
   
   }

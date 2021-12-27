@@ -34,19 +34,13 @@ mixin MAParticleColorGenerate on NSObject {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleColorGenerate::getColor', {"__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAParticleColorGenerate::getColor', {"__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = NSValue/* float* */()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<NSValue/* float* */>(__result__);
   }
   
 }
@@ -55,21 +49,13 @@ extension MAParticleColorGenerate_Batch on List<MAParticleColorGenerate> {
   //region methods
   
   Future<List<NSValue/* float* */>> getColor_batch() async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAParticleColorGenerate::getColor_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAParticleColorGenerate::getColor_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => NSValue/* float* */()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<NSValue/* float* */>(__result__)).cast<NSValue/* float* */>().toList();
   }
   
   //endregion

@@ -19,10 +19,10 @@ class DrawPointScreen extends StatefulWidget {
 
 class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
   AmapController _controller;
-  List<Marker> _markers = [];
-  Marker _hiddenMarker;
-  SmoothMoveMarker _moveMarker;
-  MultiPointOverlay _multiPointOverlay;
+  List<IMarker> _markers = [];
+  IMarker _hiddenMarker;
+  ISmoothMoveMarker _moveMarker;
+  IMultiPointOverlay _multiPointOverlay;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +36,9 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
               children: <Widget>[
                 AmapView(
                   zoomLevel: 6,
-//                  markers: [
-//                    MarkerOption(
-//                      latLng: getNextLatLng(),
-////                  iconUri: _assetsIcon1,
-////                  imageConfig: createLocalImageConfiguration(context),
-//                    ),
-//                  ],
                   onMapCreated: (controller) async {
                     _controller = controller;
+//                    await _controller.setMapAnchor(0.5, 0.8);
                     if (await requestPermission()) {
                       await controller.setZoomLevel(6);
                     }
@@ -67,9 +61,9 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                   onTap: () async {
                     final marker = await _controller?.addMarkers(
                       [
-                        for (int i = 0; i < 100; i++)
+                        for (int i = 0; i < 10; i++)
                           MarkerOption(
-                            latLng: getNextLatLng(),
+                            coordinate: getNextLatLng(),
                             widget: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -90,11 +84,180 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                   onTap: () async {
                     final marker = await _controller?.addMarker(
                       MarkerOption(
-                        latLng: getNextLatLng(),
+                        coordinate: getNextLatLng(),
+                        title: '北京${random.nextDouble()}',
+                        snippet: '描述${random.nextDouble()}',
+                        infoWindowEnabled: true,
+                        draggable: true,
+                        object: '自定义数据${random.nextDouble()}',
+                      ),
+                    );
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加自定义Info Window')),
+                  onTap: () async {
+                    await _controller?.setMarkerClickedListener((marker) async {
+                      await _controller.showCustomInfoWindow(
+                        marker,
+                        Card(
+                          elevation: 10,
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.location_on),
+                                Text(await marker.title),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    });
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加自定义图片Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
                         title: '北京${random.nextDouble()}',
                         snippet: '描述${random.nextDouble()}',
                         iconProvider: _assetsIcon1,
                         infoWindowEnabled: true,
+                        object: '自定义数据${random.nextDouble()}',
+                      ),
+                    );
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加缩放动画Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
+                        iconProvider: _assetsIcon1,
+                        anchorU: 0.5,
+                        anchorV: 1,
+                        visible: false,
+                      ),
+                    );
+                    await marker.startAnimation(ScaleMarkerAnimation(
+                      fromValue: 0.8,
+                      toValue: 1.2,
+                      duration: Duration(milliseconds: 1000),
+                      repeatCount: 0,
+                    ));
+                    await marker.setVisible(true);
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加移动动画Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
+                        iconProvider: _assetsIcon1,
+                        anchorU: 0.5,
+                        anchorV: 1,
+                        visible: false,
+                      ),
+                    );
+                    await marker.startAnimation(TranslateMarkerAnimation(
+                      coordinate: getNextLatLng(),
+                      duration: Duration(milliseconds: 1000),
+                      repeatCount: 10000000,
+                    ));
+                    await marker.setVisible(true);
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加透明度动画Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
+                        iconProvider: _assetsIcon1,
+                        anchorU: 0.5,
+                        anchorV: 1,
+                        visible: false,
+                      ),
+                    );
+                    await marker.startAnimation(AlphaMarkerAnimation(
+                      fromValue: 0,
+                      toValue: 1,
+                      duration: Duration(milliseconds: 1000),
+                      repeatCount: 0,
+                    ));
+                    await marker.setVisible(true);
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加旋转动画Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
+                        iconProvider: _assetsIcon1,
+                        anchorU: 0.5,
+                        anchorV: 1,
+                        visible: false,
+                      ),
+                    );
+                    await marker.startAnimation(RotateMarkerAnimation(
+                      fromValue: 0,
+                      toValue: 100,
+                      duration: Duration(milliseconds: 1000),
+                      repeatCount: 0,
+                    ));
+                    await marker.setVisible(true);
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加混合动画Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
+                        iconProvider: _assetsIcon1,
+                        anchorU: 0.5,
+                        anchorV: 1,
+                        visible: false,
+                      ),
+                    );
+                    await marker.startAnimation(MarkerAnimationSet(
+                      animationSet: [
+                        RotateMarkerAnimation(fromValue: 0, toValue: 100),
+                        AlphaMarkerAnimation(fromValue: 0, toValue: 1),
+                        ScaleMarkerAnimation(fromValue: 0.8, toValue: 1.2),
+                      ],
+                      repeatCount: 0,
+                    ));
+                    await marker.setVisible(true);
+                    _markers.add(marker);
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加帧动画Marker')),
+                  onTap: () async {
+                    final marker = await _controller?.addMarker(
+                      MarkerOption(
+                        coordinate: getNextLatLng(),
+                        title: '北京${random.nextDouble()}',
+                        snippet: '描述${random.nextDouble()}',
+                        iconsProvider: [
+                          for (int i = 0; i < 20; i++)
+                            AssetImage('images/animation$i.jpg')
+                        ],
+                        animationFps: 3,
                         object: '自定义数据${random.nextDouble()}',
                       ),
                     );
@@ -113,7 +276,7 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                     await _hiddenMarker?.remove();
                     _hiddenMarker = await _controller?.addMarker(
                       MarkerOption(
-                        latLng: getNextLatLng(),
+                        coordinate: getNextLatLng(),
                         title: '北京',
                         snippet: '描述',
                         iconProvider: _assetsIcon1,
@@ -134,7 +297,7 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                   onTap: () async {
                     if (_markers.isNotEmpty) {
                       final marker = _markers[0];
-                      marker.showInfoWindow();
+                      await marker.showInfoWindow();
                     }
                   },
                 ),
@@ -143,7 +306,7 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                   onTap: () async {
                     if (_markers.isNotEmpty) {
                       final marker = _markers[0];
-                      marker.hideInfoWindow();
+                      await marker.hideInfoWindow();
                     }
                   },
                 ),
@@ -153,7 +316,7 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                     await _controller?.clearMarkers(_markers);
                     final marker = await _controller?.addMarker(
                       MarkerOption(
-                        latLng: LatLng(39.90960, 116.397228),
+                        coordinate: LatLng(39.90960, 116.397228),
                         title: '北京',
                         snippet: '描述',
                         iconProvider: _assetsIcon1,
@@ -173,13 +336,10 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                       [
                         for (int i = 0; i < 100; i++)
                           MarkerOption(
-                            latLng: getNextLatLng(),
-//                            title: '北京$i',
-//                            snippet: '描述$i',
+                            coordinate: getNextLatLng(),
                             iconProvider:
                                 i % 2 == 0 ? _assetsIcon1 : _assetsIcon2,
                             infoWindowEnabled: false,
-//                            rotateAngle: 90,
                             object: 'Marker_$i',
                           ),
                       ],
@@ -202,10 +362,16 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                   },
                 ),
                 ListTile(
+                  title: Center(child: Text('清除所有覆盖物')),
+                  onTap: () async {
+                    await _controller.clear();
+                  },
+                ),
+                ListTile(
                   title: Center(child: Text('Marker添加点击事件')),
                   onTap: () {
                     _controller?.setMarkerClickedListener((marker) async {
-                      marker.setIcon(
+                      await marker.setIcon(
                         _assetsIcon2,
                         createLocalImageConfiguration(context),
                       );
@@ -219,10 +385,25 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                     _controller?.setMarkerDragListener(
                       onMarkerDragEnd: (marker) async {
                         toast(
-                          '${await marker.title}, ${await marker.location}',
+                          '${await marker.title}, ${await marker.coordinate}',
                         );
                       },
                     );
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('将地图缩放至可以显示所有Marker')),
+                  onTap: () {
+                    Stream.fromIterable(_markers)
+                        .asyncMap((marker) => marker.coordinate)
+                        .toList()
+                        .then((boundary) {
+                      debugPrint('boundary: $boundary');
+                      _controller.zoomToSpan(
+                        boundary,
+                        padding: EdgeInsets.only(top: 100, bottom: 50),
+                      );
+                    });
                   },
                 ),
                 ListTile(
@@ -230,17 +411,90 @@ class DrawPointScreenState extends State<DrawPointScreen> with NextLatLng {
                   onTap: () async {
                     await _controller
                         ?.setInfoWindowClickListener((marker) async {
-                      toast('${await marker.title}, ${await marker.location}');
+                      toast(
+                          '${await marker.title}, ${await marker.coordinate}');
                       return false;
                     });
                   },
                 ),
                 ListTile(
-                  title: Center(child: Text('进入二级地图页面')),
+                  title: Center(child: Text('画热力图')),
                   onTap: () async {
+                    await _controller?.addHeatmapTileOverlay(
+                      HeatmapTileOption(
+                        coordinateList: getNextBatchLatLng(50),
+                        gradient: RadialGradient(
+                          colors: [Colors.blue, Colors.yellow, Colors.red],
+                          stops: <double>[0.08, 0.4, 1.0],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('(专业版)添加在线瓦片图')),
+                  onTap: () async {
+                    await _controller?.addUrlTileOverlay(
+                      UrlTileOption(
+                        width: 256,
+                        height: 256,
+                        urlTemplate:
+//                        'http://tile.opencyclemap.org/cycle/{scale}/{x}/{y}.png', // 由于没有api key, 这个链接无法显示瓦片
+                            'https://c2.hoopchina.com.cn/uploads/star/event/images/200709/bmiddle-34faa76c78ff3ba7a67282d64ff3c081135d4743.jpg?x-oss-process=image/resize,w_780,312',
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加平滑移动点')),
+                  onTap: () async {
+                    _moveMarker = await _controller?.addSmoothMoveMarker(
+                      SmoothMoveMarkerOption(
+                        path: [for (int i = 0; i < 10; i++) getNextLatLng()],
+                        iconProvider: _assetsIcon1,
+                        duration: Duration(seconds: 10),
+                      ),
+                    );
+                    Future.delayed(
+                      Duration(seconds: 5),
+                      () => _moveMarker.stop(),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('进入二级地图页面')),
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => DrawPointScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('添加海量点')),
+                  onTap: () async {
+                    _multiPointOverlay =
+                        await _controller?.addMultiPointOverlay(
+                      MultiPointOption(
+                        pointList: [
+                          for (int i = 0; i < 10000; i++)
+                            PointOption(
+                              coordinate: getNextLatLng(),
+                              id: i.toString(),
+                              title: 'Point$i',
+                              snippet: 'Snippet$i',
+                              object: 'Object$i',
+                            )
+                        ],
+                        iconProvider: _assetsIcon1,
+                      ),
+                    );
+                    await _controller?.setMultiPointClickedListener(
+                      (id, title, snippet, object) async {
+                        toast(
+                          'id: $id, title: $title, snippet: $snippet, object: $object',
+                        );
+                      },
                     );
                   },
                 ),

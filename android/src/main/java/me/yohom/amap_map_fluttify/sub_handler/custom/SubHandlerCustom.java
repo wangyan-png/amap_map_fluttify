@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.utils.PathSmoothTool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +32,11 @@ import static me.yohom.foundation_fluttify.FoundationFluttifyPluginKt.getSTACK;
 @SuppressWarnings("ALL")
 public class SubHandlerCustom {
 
-    public static SubHandlerCustom instance = new SubHandlerCustom();
+    public static final SubHandlerCustom instance = new SubHandlerCustom();
 
     private SubHandlerCustom() { }
 
-    public Map<String, Handler> getSubHandler(BinaryMessenger messenger, Activity activity) {
+    public static Map<String, Handler> getSubHandler(BinaryMessenger messenger, Activity activity) {
         return new HashMap<String, Handler>() {{
             put("com.amap.api.maps.AMap::setInfoWindowAdapterX", (__args__, __methodResult__) -> {
                 // ref
@@ -94,6 +95,658 @@ public class SubHandlerCustom {
                     return;
                 }
             });
+            put("ObjectFactory::createcom_amap_api_maps_model_Gradient__intArray__floatArrayX", (__args__, __methodResult__) -> {
+                if (getEnableLog()) {
+                    Log.d("ObjectFactory", "创建对象: com_amap_api_maps_model_Gradient__intArray__floatArray");
+                }
+
+                // args
+                // jsonable arg
+                int[] var1 = (int[]) ((Map<String, Object>) __args__).get("var1");
+                // jsonable arg
+                double[] var2 = (double[]) ((Map<String, Object>) __args__).get("var2");
+
+                float[] stopList = new float[var2.length];
+                for (int i = 0; i < var2.length; i++) {
+                    stopList[i] = (float) var2[i];
+                }
+
+                // create target object
+                com.amap.api.maps.model.Gradient __obj__ = new com.amap.api.maps.model.Gradient(var1, stopList);
+
+                __methodResult__.success(__obj__);
+            });
+            //region 平滑轨迹
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::setIntensity", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                Number mIntensity = (Number) ((Map<String, Object>) __args__).get("mIntensity");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::setIntensity(" + mIntensity + ")");
+                }
+
+                // invoke native method
+                Void __result__ = null;
+                try {
+                    __this__.setIntensity(mIntensity.intValue());
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::getThreshhold", (__args__, __methodResult__) -> {
+                // args
+
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::getThreshhold(" + "" + ")");
+                }
+
+                // invoke native method
+                Float __result__ = null;
+                try {
+                    __result__ = __this__.getThreshhold();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::setThreshhold", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                Number mThreshhold = (Number) ((Map<String, Object>) __args__).get("mThreshhold");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::setThreshhold(" + mThreshhold + ")");
+                }
+
+                // invoke native method
+                Void __result__ = null;
+                try {
+                    __this__.setThreshhold(mThreshhold.floatValue());
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::setNoiseThreshhold", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                Number mnoiseThreshhold = (Number) ((Map<String, Object>) __args__).get("mnoiseThreshhold");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::setNoiseThreshhold(" + mnoiseThreshhold + ")");
+                }
+
+                // invoke native method
+                Void __result__ = null;
+                try {
+                    __this__.setNoiseThreshhold(mnoiseThreshhold.floatValue());
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::pathOptimize", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                java.util.List<com.amap.api.maps.model.LatLng> originlist = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("originlist");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::pathOptimize(" + originlist + ")");
+                }
+
+                // invoke native method
+                java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                try {
+                    __result__ = __this__.pathOptimize(originlist);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::kalmanFilterPath__List_com_amap_api_maps_model_LatLng_", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                java.util.List<com.amap.api.maps.model.LatLng> originlist = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("originlist");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::kalmanFilterPath(" + originlist + ")");
+                }
+
+                // invoke native method
+                java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                try {
+                    __result__ = __this__.kalmanFilterPath(originlist);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::removeNoisePoint", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                java.util.List<com.amap.api.maps.model.LatLng> originlist = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("originlist");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::removeNoisePoint(" + originlist + ")");
+                }
+
+                // invoke native method
+                java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                try {
+                    __result__ = __this__.removeNoisePoint(originlist);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::kalmanFilterPoint__com_amap_api_maps_model_LatLng__com_amap_api_maps_model_LatLng", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                com.amap.api.maps.model.LatLng lastLoc = (com.amap.api.maps.model.LatLng) ((Map<String, Object>) __args__).get("lastLoc");
+                // ref arg
+                com.amap.api.maps.model.LatLng curLoc = (com.amap.api.maps.model.LatLng) ((Map<String, Object>) __args__).get("curLoc");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::kalmanFilterPoint(" + lastLoc + curLoc + ")");
+                }
+
+                // invoke native method
+                com.amap.api.maps.model.LatLng __result__ = null;
+                try {
+                    __result__ = __this__.kalmanFilterPoint(lastLoc, curLoc);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::reducerVerticalThreshold__List_com_amap_api_maps_model_LatLng_", (__args__, __methodResult__) -> {
+                // args
+                // ref arg
+                java.util.List<com.amap.api.maps.model.LatLng> inPoints = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("inPoints");
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::reducerVerticalThreshold(" + inPoints + ")");
+                }
+
+                // invoke native method
+                java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                try {
+                    __result__ = __this__.reducerVerticalThreshold(inPoints);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::getIntensity", (__args__, __methodResult__) -> {
+                // args
+
+
+                // ref
+                PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                // print log
+                if (getEnableLog()) {
+                    Log.d("fluttify-java", "fluttify-java: com.amap.api.maps.utils.PathSmoothTool@" + __this__ + "::getIntensity(" + "" + ")");
+                }
+
+                // invoke native method
+                Integer __result__ = null;
+                try {
+                    __result__ = __this__.getIntensity();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    if (getEnableLog()) {
+                        Log.d("Current HEAP: ", getHEAP().toString());
+                    }
+                    __methodResult__.error(throwable.getMessage(), null, null);
+                    return;
+                }
+
+                __methodResult__.success(__result__);
+            });
+            // factory
+            put("ObjectFactory::createcom_amap_api_maps_utils_PathSmoothTool__", (__args__, __methodResult__) -> {
+                if (getEnableLog()) {
+                    Log.d("ObjectFactory", "创建对象: com_amap_api_maps_utils_PathSmoothTool__");
+                }
+
+                // args
+
+
+                // create target object
+                PathSmoothTool __obj__ = new PathSmoothTool();
+
+                // print current HEAP
+                if (getEnableLog()) {
+                    Log.d("ObjectFactory", "HEAP: " + getHEAP());
+                }
+
+                __methodResult__.success(__obj__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::getIntensity_batch", (__argsBatch__, __methodResult__) -> {
+                List<Integer> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    Integer __result__ = null;
+                    try {
+                        __result__ = __this__.getIntensity();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::setIntensity_batch", (__argsBatch__, __methodResult__) -> {
+                List<Void> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    Number mIntensity = (Number) ((Map<String, Object>) __args__).get("mIntensity");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    Void __result__ = null;
+                    try {
+                        __this__.setIntensity(mIntensity.intValue());
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::getThreshhold_batch", (__argsBatch__, __methodResult__) -> {
+                List<Float> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    Float __result__ = null;
+                    try {
+                        __result__ = __this__.getThreshhold();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::setThreshhold_batch", (__argsBatch__, __methodResult__) -> {
+                List<Void> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    Number mThreshhold = (Number) ((Map<String, Object>) __args__).get("mThreshhold");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    Void __result__ = null;
+                    try {
+                        __this__.setThreshhold(mThreshhold.floatValue());
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::setNoiseThreshhold_batch", (__argsBatch__, __methodResult__) -> {
+                List<Void> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    Number mnoiseThreshhold = (Number) ((Map<String, Object>) __args__).get("mnoiseThreshhold");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    Void __result__ = null;
+                    try {
+                        __this__.setNoiseThreshhold(mnoiseThreshhold.floatValue());
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::pathOptimize_batch", (__argsBatch__, __methodResult__) -> {
+                List<java.util.List<com.amap.api.maps.model.LatLng>> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    java.util.List<com.amap.api.maps.model.LatLng> originlist = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("originlist");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                    try {
+                        __result__ = __this__.pathOptimize(originlist);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::kalmanFilterPath__List_com_amap_api_maps_model_LatLng__batch", (__argsBatch__, __methodResult__) -> {
+                List<java.util.List<com.amap.api.maps.model.LatLng>> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    java.util.List<com.amap.api.maps.model.LatLng> originlist = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("originlist");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                    try {
+                        __result__ = __this__.kalmanFilterPath(originlist);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::removeNoisePoint_batch", (__argsBatch__, __methodResult__) -> {
+                List<java.util.List<com.amap.api.maps.model.LatLng>> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    java.util.List<com.amap.api.maps.model.LatLng> originlist = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("originlist");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                    try {
+                        __result__ = __this__.removeNoisePoint(originlist);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::kalmanFilterPoint__com_amap_api_maps_model_LatLng__com_amap_api_maps_model_LatLng_batch", (__argsBatch__, __methodResult__) -> {
+                List<com.amap.api.maps.model.LatLng> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    com.amap.api.maps.model.LatLng lastLoc = (com.amap.api.maps.model.LatLng) ((Map<String, Object>) __args__).get("lastLoc");
+                    // ref arg
+                    com.amap.api.maps.model.LatLng curLoc = (com.amap.api.maps.model.LatLng) ((Map<String, Object>) __args__).get("curLoc");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    com.amap.api.maps.model.LatLng __result__ = null;
+                    try {
+                        __result__ = __this__.kalmanFilterPoint(lastLoc, curLoc);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            // method
+            put("com.amap.api.maps.utils.PathSmoothTool::reducerVerticalThreshold__List_com_amap_api_maps_model_LatLng__batch", (__argsBatch__, __methodResult__) -> {
+                List<List<LatLng>> __resultList__ = new ArrayList<>();
+
+                for (int __i__ = 0; __i__ < ((List<Map<String, Object>>) __argsBatch__).size(); __i__++) {
+                    Map<String, Object> __args__ = ((List<Map<String, Object>>) __argsBatch__).get(__i__);
+
+                    // args
+                    // ref arg
+                    java.util.List<com.amap.api.maps.model.LatLng> inPoints = (java.util.List<com.amap.api.maps.model.LatLng>) ((Map<String, Object>) __args__).get("inPoints");
+
+                    // ref
+                    PathSmoothTool __this__ = (PathSmoothTool) ((Map<String, Object>) __args__).get("__this__");
+
+                    // invoke native method
+                    java.util.List<com.amap.api.maps.model.LatLng> __result__ = null;
+                    try {
+                        __result__ = __this__.reducerVerticalThreshold(inPoints);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        if (getEnableLog()) {
+                            Log.d("Current HEAP: ", getHEAP().toString());
+                        }
+                        __methodResult__.error(throwable.getMessage(), null, null);
+                        return;
+                    }
+
+                    __resultList__.add(__result__);
+                }
+
+                __methodResult__.success(__resultList__);
+            });
+            //endregion
         }};
     }
 }

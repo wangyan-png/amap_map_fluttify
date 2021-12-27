@@ -106,7 +106,7 @@ extern BOOL enableLog;
     // 这里用一个magic number调整一下id
     // 同时存放viewId和refId的对象, 供后续viewId转refId使用
     HEAP[[NSString stringWithFormat:@"%@", @(2147483647 - _viewId)]] = _view;
-    HEAP[[NSString stringWithFormat:@"%@", @(_view.hash)]] = _view;
+    HEAP[[NSString stringWithFormat:@"%@:%@", @"MAMapView", @(_view.hash)]] = _view;
   }
 
   //region method call handler
@@ -119,10 +119,16 @@ extern BOOL enableLog;
     NSDictionary<NSString *, id> *args = (NSDictionary<NSString *, id> *) [methodCall arguments];
 
     __strong __typeof(weakSelf) strongSelf = weakSelf;
-    if (strongSelf != nil && strongSelf->_handlerMap[methodCall.method] != nil) {
-      strongSelf->_handlerMap[methodCall.method](strongSelf->_registrar, args, methodResult);
+    if (strongSelf != nil) {
+      if (strongSelf->_handlerMap[methodCall.method] != nil) {
+        strongSelf->_handlerMap[methodCall.method](strongSelf->_registrar, args, methodResult);
+      } else {
+        methodResult(FlutterMethodNotImplemented);
+      }
     } else {
-      methodResult(FlutterMethodNotImplemented);
+      methodResult([FlutterError errorWithCode:@"当前PlatformView为nil"
+                                       message: @"当前PlatformView为nil"
+                                       details:[NSString stringWithFormat:@"请不要在 %@ 释放后继续调用其对象的方法", NSStringFromClass([MAMapView class])]]);
     }
   }];
   //endregion
@@ -130,20 +136,31 @@ extern BOOL enableLog;
   //region handlers
   _handlerMap = @{
       @"MAMapView::setRegion_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setRegion_animated(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* regionValue = (NSValue*) args[@"region"];
           MACoordinateRegion region;
-          [regionValue getValue:&region];
+          if (regionValue != nil && (NSNull*) regionValue != [NSNull null]) {
+            [regionValue getValue:&region];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"region不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setRegion(%@, %@)", args[@"refId"], args[@"region"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -156,18 +173,29 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::regionThatFits": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::regionThatFits(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* regionValue = (NSValue*) args[@"region"];
           MACoordinateRegion region;
-          [regionValue getValue:&region];
+          if (regionValue != nil && (NSNull*) regionValue != [NSNull null]) {
+            [regionValue getValue:&region];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"region不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::regionThatFits(%@)", args[@"refId"], args[@"region"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -180,20 +208,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setVisibleMapRect_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setVisibleMapRect_animated(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* mapRectValue = (NSValue*) args[@"mapRect"];
           MAMapRect mapRect;
-          [mapRectValue getValue:&mapRect];
+          if (mapRectValue != nil && (NSNull*) mapRectValue != [NSNull null]) {
+            [mapRectValue getValue:&mapRect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"mapRect不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setVisibleMapRect(%@, %@)", args[@"refId"], args[@"mapRect"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -206,18 +245,29 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::mapRectThatFits": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::mapRectThatFits(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* mapRectValue = (NSValue*) args[@"mapRect"];
           MAMapRect mapRect;
-          [mapRectValue getValue:&mapRect];
+          if (mapRectValue != nil && (NSNull*) mapRectValue != [NSNull null]) {
+            [mapRectValue getValue:&mapRect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"mapRect不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::mapRectThatFits(%@)", args[@"refId"], args[@"mapRect"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -230,22 +280,41 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::mapRectThatFits_edgePadding": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::mapRectThatFits_edgePadding(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* mapRectValue = (NSValue*) args[@"mapRect"];
           MAMapRect mapRect;
-          [mapRectValue getValue:&mapRect];
+          if (mapRectValue != nil && (NSNull*) mapRectValue != [NSNull null]) {
+            [mapRectValue getValue:&mapRect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"mapRect不能为null"]);
+            return;
+          }
+      
           // struct arg
           NSValue* insetsValue = (NSValue*) args[@"insets"];
           UIEdgeInsets insets;
-          [insetsValue getValue:&insets];
+          if (insetsValue != nil && (NSNull*) insetsValue != [NSNull null]) {
+            [insetsValue getValue:&insets];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"insets不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::mapRectThatFits(%@, %@)", args[@"refId"], args[@"mapRect"], args[@"insets"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -258,24 +327,43 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setVisibleMapRect_edgePadding_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setVisibleMapRect_edgePadding_animated(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* mapRectValue = (NSValue*) args[@"mapRect"];
           MAMapRect mapRect;
-          [mapRectValue getValue:&mapRect];
+          if (mapRectValue != nil && (NSNull*) mapRectValue != [NSNull null]) {
+            [mapRectValue getValue:&mapRect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"mapRect不能为null"]);
+            return;
+          }
+      
           // struct arg
           NSValue* insetsValue = (NSValue*) args[@"insets"];
           UIEdgeInsets insets;
-          [insetsValue getValue:&insets];
+          if (insetsValue != nil && (NSNull*) insetsValue != [NSNull null]) {
+            [insetsValue getValue:&insets];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"insets不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setVisibleMapRect(%@, %@, %@)", args[@"refId"], args[@"mapRect"], args[@"insets"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -288,20 +376,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCenterCoordinate_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCenterCoordinate_animated(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* coordinateValue = (NSValue*) args[@"coordinate"];
           CLLocationCoordinate2D coordinate;
-          [coordinateValue getValue:&coordinate];
+          if (coordinateValue != nil && (NSNull*) coordinateValue != [NSNull null]) {
+            [coordinateValue getValue:&coordinate];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"coordinate不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCenterCoordinate(%@, %@)", args[@"refId"], args[@"coordinate"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -314,6 +413,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setZoomLevel_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setZoomLevel_animated(%@)", args);
+          }
+      
           // args
           // jsonable arg
           CGFloat zoomLevel = [args[@"zoomLevel"] floatValue];
@@ -322,10 +425,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setZoomLevel(%@, %@)", args[@"refId"], args[@"zoomLevel"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -338,22 +440,33 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setZoomLevel_atPivot_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setZoomLevel_atPivot_animated(%@)", args);
+          }
+      
           // args
           // jsonable arg
           CGFloat zoomLevel = [args[@"zoomLevel"] floatValue];
           // struct arg
           NSValue* pivotValue = (NSValue*) args[@"pivot"];
           CGPoint pivot;
-          [pivotValue getValue:&pivot];
+          if (pivotValue != nil && (NSNull*) pivotValue != [NSNull null]) {
+            [pivotValue getValue:&pivot];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"pivot不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setZoomLevel(%@, %@, %@)", args[@"refId"], args[@"zoomLevel"], args[@"pivot"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -366,6 +479,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setRotationDegree_animated_duration": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setRotationDegree_animated_duration(%@)", args);
+          }
+      
           // args
           // jsonable arg
           CGFloat rotationDegree = [args[@"rotationDegree"] floatValue];
@@ -376,10 +493,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setRotationDegree(%@, %@, %@)", args[@"refId"], args[@"rotationDegree"], args[@"animated"], args[@"duration"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -392,6 +508,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCameraDegree_animated_duration": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCameraDegree_animated_duration(%@)", args);
+          }
+      
           // args
           // jsonable arg
           CGFloat cameraDegree = [args[@"cameraDegree"] floatValue];
@@ -402,10 +522,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCameraDegree(%@, %@, %@)", args[@"refId"], args[@"cameraDegree"], args[@"animated"], args[@"duration"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -418,15 +537,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::getMapStatus": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::getMapStatus(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::getMapStatus()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -439,6 +561,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setMapStatus_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setMapStatus_animated(%@)", args);
+          }
+      
           // args
           // ref arg
           MAMapStatus* status = (MAMapStatus*) (args[@"status"] == [NSNull null] ? nil : args[@"status"]);
@@ -447,10 +573,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setMapStatus(%@, %@)", args[@"refId"], args[@"status"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -463,6 +588,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setMapStatus_animated_duration": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setMapStatus_animated_duration(%@)", args);
+          }
+      
           // args
           // ref arg
           MAMapStatus* status = (MAMapStatus*) (args[@"status"] == [NSNull null] ? nil : args[@"status"]);
@@ -473,10 +602,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setMapStatus(%@, %@, %@)", args[@"refId"], args[@"status"], args[@"animated"], args[@"duration"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -489,16 +617,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCompassImage": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCompassImage(%@)", args);
+          }
+      
           // args
           // ref arg
           UIImage* image = (UIImage*) (args[@"image"] == [NSNull null] ? nil : args[@"image"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCompassImage(%@)", args[@"refId"], args[@"image"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -511,18 +642,29 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::takeSnapshotInRect": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::takeSnapshotInRect(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* rectValue = (NSValue*) args[@"rect"];
           CGRect rect;
-          [rectValue getValue:&rect];
+          if (rectValue != nil && (NSNull*) rectValue != [NSNull null]) {
+            [rectValue getValue:&rect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"rect不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::takeSnapshotInRect(%@)", args[@"refId"], args[@"rect"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -535,25 +677,36 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::takeSnapshotInRect_withCompletionBlock": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::takeSnapshotInRect_withCompletionBlock(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* rectValue = (NSValue*) args[@"rect"];
           CGRect rect;
-          [rectValue getValue:&rect];
+          if (rectValue != nil && (NSNull*) rectValue != [NSNull null]) {
+            [rectValue getValue:&rect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"rect不能为null"]);
+            return;
+          }
+      
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::takeSnapshotInRect(%@, %@)", args[@"refId"], args[@"rect"], args[@"block"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
           [ref takeSnapshotInRect : rect withCompletionBlock: ^(UIImage* resultImage, NSInteger state) {
               FlutterMethodChannel *channel = [FlutterMethodChannel
-                    methodChannelWithName:[NSString stringWithFormat:@"void|UIImage*#resultImage,NSInteger#state::Callback@%@", @(ref.hash)]
+                    methodChannelWithName:[NSString stringWithFormat:@"void|UIImage*#resultImage,NSInteger#state::Callback@%@:%@", NSStringFromClass([ref class]), @(ref.hash)]
                           binaryMessenger:[[weakSelf registrar] messenger]
                                     codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
       
@@ -581,16 +734,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::metersPerPointForZoomLevel": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::metersPerPointForZoomLevel(%@)", args);
+          }
+      
           // args
           // jsonable arg
           CGFloat zoomLevel = [args[@"zoomLevel"] floatValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::metersPerPointForZoomLevel(%@)", args[@"refId"], args[@"zoomLevel"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -603,20 +759,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::convertCoordinate_toPointToView": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::convertCoordinate_toPointToView(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* coordinateValue = (NSValue*) args[@"coordinate"];
           CLLocationCoordinate2D coordinate;
-          [coordinateValue getValue:&coordinate];
+          if (coordinateValue != nil && (NSNull*) coordinateValue != [NSNull null]) {
+            [coordinateValue getValue:&coordinate];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"coordinate不能为null"]);
+            return;
+          }
+      
           // ref arg
           UIView* view = (UIView*) (args[@"view"] == [NSNull null] ? nil : args[@"view"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::convertCoordinate(%@, %@)", args[@"refId"], args[@"coordinate"], args[@"view"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -629,20 +796,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::convertPoint_toCoordinateFromView": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::convertPoint_toCoordinateFromView(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* pointValue = (NSValue*) args[@"point"];
           CGPoint point;
-          [pointValue getValue:&point];
+          if (pointValue != nil && (NSNull*) pointValue != [NSNull null]) {
+            [pointValue getValue:&point];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"point不能为null"]);
+            return;
+          }
+      
           // ref arg
           UIView* view = (UIView*) (args[@"view"] == [NSNull null] ? nil : args[@"view"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::convertPoint(%@, %@)", args[@"refId"], args[@"point"], args[@"view"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -655,20 +833,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::convertRegion_toRectToView": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::convertRegion_toRectToView(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* regionValue = (NSValue*) args[@"region"];
           MACoordinateRegion region;
-          [regionValue getValue:&region];
+          if (regionValue != nil && (NSNull*) regionValue != [NSNull null]) {
+            [regionValue getValue:&region];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"region不能为null"]);
+            return;
+          }
+      
           // ref arg
           UIView* view = (UIView*) (args[@"view"] == [NSNull null] ? nil : args[@"view"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::convertRegion(%@, %@)", args[@"refId"], args[@"region"], args[@"view"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -681,20 +870,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::convertRect_toRegionFromView": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::convertRect_toRegionFromView(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* rectValue = (NSValue*) args[@"rect"];
           CGRect rect;
-          [rectValue getValue:&rect];
+          if (rectValue != nil && (NSNull*) rectValue != [NSNull null]) {
+            [rectValue getValue:&rect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"rect不能为null"]);
+            return;
+          }
+      
           // ref arg
           UIView* view = (UIView*) (args[@"view"] == [NSNull null] ? nil : args[@"view"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::convertRect(%@, %@)", args[@"refId"], args[@"rect"], args[@"view"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -707,15 +907,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::reloadMap": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::reloadMap(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::reloadMap()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -728,15 +931,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::clearDisk": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::clearDisk(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::clearDisk()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -749,15 +955,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::reloadInternalTexture": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::reloadInternalTexture(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::reloadInternalTexture()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -770,15 +979,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::mapContentApprovalNumber": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::mapContentApprovalNumber(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::mapContentApprovalNumber()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -791,15 +1003,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::satelliteImageApprovalNumber": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::satelliteImageApprovalNumber(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::satelliteImageApprovalNumber()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -812,15 +1027,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::forceRefresh": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::forceRefresh(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::forceRefresh()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -833,16 +1051,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::addAnnotation": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::addAnnotation(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAAnnotation> annotation = (id<MAAnnotation>) (args[@"annotation"] == [NSNull null] ? nil : args[@"annotation"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::addAnnotation(%@)", args[@"refId"], args[@"annotation"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -855,16 +1076,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::addAnnotations": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::addAnnotations(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* annotations = (NSArray<NSObject*>*) args[@"annotations"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::addAnnotations(%@)", args[@"refId"], args[@"annotations"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -877,16 +1101,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::removeAnnotation": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::removeAnnotation(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAAnnotation> annotation = (id<MAAnnotation>) (args[@"annotation"] == [NSNull null] ? nil : args[@"annotation"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::removeAnnotation(%@)", args[@"refId"], args[@"annotation"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -899,16 +1126,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::removeAnnotations": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::removeAnnotations(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* annotations = (NSArray<NSObject*>*) args[@"annotations"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::removeAnnotations(%@)", args[@"refId"], args[@"annotations"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -921,16 +1151,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::viewForAnnotation": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::viewForAnnotation(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAAnnotation> annotation = (id<MAAnnotation>) (args[@"annotation"] == [NSNull null] ? nil : args[@"annotation"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::viewForAnnotation(%@)", args[@"refId"], args[@"annotation"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -943,16 +1176,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::dequeueReusableAnnotationViewWithIdentifier": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::dequeueReusableAnnotationViewWithIdentifier(%@)", args);
+          }
+      
           // args
           // jsonable arg
           NSString* identifier = (NSString*) args[@"identifier"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::dequeueReusableAnnotationViewWithIdentifier(%@)", args[@"refId"], args[@"identifier"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -965,6 +1201,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::selectAnnotation_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::selectAnnotation_animated(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAAnnotation> annotation = (id<MAAnnotation>) (args[@"annotation"] == [NSNull null] ? nil : args[@"annotation"]);
@@ -973,10 +1213,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::selectAnnotation(%@, %@)", args[@"refId"], args[@"annotation"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -989,6 +1228,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::deselectAnnotation_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::deselectAnnotation_animated(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAAnnotation> annotation = (id<MAAnnotation>) (args[@"annotation"] == [NSNull null] ? nil : args[@"annotation"]);
@@ -997,10 +1240,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::deselectAnnotation(%@, %@)", args[@"refId"], args[@"annotation"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1013,6 +1255,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::showAnnotations_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::showAnnotations_animated(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* annotations = (NSArray<NSObject*>*) args[@"annotations"];
@@ -1021,10 +1267,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::showAnnotations(%@, %@)", args[@"refId"], args[@"annotations"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1037,22 +1282,33 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::showAnnotations_edgePadding_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::showAnnotations_edgePadding_animated(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* annotations = (NSArray<NSObject*>*) args[@"annotations"];
           // struct arg
           NSValue* insetsValue = (NSValue*) args[@"insets"];
           UIEdgeInsets insets;
-          [insetsValue getValue:&insets];
+          if (insetsValue != nil && (NSNull*) insetsValue != [NSNull null]) {
+            [insetsValue getValue:&insets];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"insets不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::showAnnotations(%@, %@, %@)", args[@"refId"], args[@"annotations"], args[@"insets"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1065,6 +1321,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setUserTrackingMode_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setUserTrackingMode_animated(%@)", args);
+          }
+      
           // args
           // enum arg
           MAUserTrackingMode mode = (MAUserTrackingMode) [args[@"mode"] integerValue];
@@ -1073,10 +1333,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setUserTrackingMode(%@, %@)", args[@"refId"], args[@"mode"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1089,16 +1348,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::updateUserLocationRepresentation": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::updateUserLocationRepresentation(%@)", args);
+          }
+      
           // args
           // ref arg
           MAUserLocationRepresentation* representation = (MAUserLocationRepresentation*) (args[@"representation"] == [NSNull null] ? nil : args[@"representation"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::updateUserLocationRepresentation(%@)", args[@"refId"], args[@"representation"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1111,16 +1373,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::overlaysInLevel": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::overlaysInLevel(%@)", args);
+          }
+      
           // args
           // enum arg
           MAOverlayLevel level = (MAOverlayLevel) [args[@"level"] integerValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::overlaysInLevel(%@)", args[@"refId"], args[@"level"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1133,16 +1398,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::addOverlay": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::addOverlay(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::addOverlay(%@)", args[@"refId"], args[@"overlay"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1155,16 +1423,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::addOverlays": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::addOverlays(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* overlays = (NSArray<NSObject*>*) args[@"overlays"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::addOverlays(%@)", args[@"refId"], args[@"overlays"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1177,6 +1448,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::addOverlay_level": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::addOverlay_level(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
@@ -1185,10 +1460,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::addOverlay(%@, %@)", args[@"refId"], args[@"overlay"], args[@"level"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1201,6 +1475,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::addOverlays_level": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::addOverlays_level(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* overlays = (NSArray<NSObject*>*) args[@"overlays"];
@@ -1209,10 +1487,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::addOverlays(%@, %@)", args[@"refId"], args[@"overlays"], args[@"level"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1225,16 +1502,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::removeOverlay": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::removeOverlay(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::removeOverlay(%@)", args[@"refId"], args[@"overlay"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1247,16 +1527,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::removeOverlays": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::removeOverlays(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* overlays = (NSArray<NSObject*>*) args[@"overlays"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::removeOverlays(%@)", args[@"refId"], args[@"overlays"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1269,6 +1552,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::insertOverlay_atIndex_level": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::insertOverlay_atIndex_level(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
@@ -1279,10 +1566,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::insertOverlay(%@, %@, %@)", args[@"refId"], args[@"overlay"], args[@"index"], args[@"level"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1295,6 +1581,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::insertOverlay_aboveOverlay": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::insertOverlay_aboveOverlay(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
@@ -1303,10 +1593,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::insertOverlay(%@, %@)", args[@"refId"], args[@"overlay"], args[@"sibling"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1319,6 +1608,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::insertOverlay_belowOverlay": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::insertOverlay_belowOverlay(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
@@ -1327,10 +1620,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::insertOverlay(%@, %@)", args[@"refId"], args[@"overlay"], args[@"sibling"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1343,6 +1635,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::insertOverlay_atIndex": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::insertOverlay_atIndex(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
@@ -1351,10 +1647,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::insertOverlay(%@, %@)", args[@"refId"], args[@"overlay"], args[@"index"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1367,6 +1662,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::exchangeOverlayAtIndex_withOverlayAtIndex": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::exchangeOverlayAtIndex_withOverlayAtIndex(%@)", args);
+          }
+      
           // args
           // jsonable arg
           NSUInteger index1 = [args[@"index1"] unsignedIntegerValue];
@@ -1375,10 +1674,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::exchangeOverlayAtIndex(%@, %@)", args[@"refId"], args[@"index1"], args[@"index2"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1391,6 +1689,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::exchangeOverlayAtIndex_withOverlayAtIndex_atLevel": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::exchangeOverlayAtIndex_withOverlayAtIndex_atLevel(%@)", args);
+          }
+      
           // args
           // jsonable arg
           NSUInteger index1 = [args[@"index1"] unsignedIntegerValue];
@@ -1401,10 +1703,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::exchangeOverlayAtIndex(%@, %@, %@)", args[@"refId"], args[@"index1"], args[@"index2"], args[@"level"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1417,6 +1718,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::exchangeOverlay_withOverlay": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::exchangeOverlay_withOverlay(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay1 = (id<MAOverlay>) (args[@"overlay1"] == [NSNull null] ? nil : args[@"overlay1"]);
@@ -1425,10 +1730,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::exchangeOverlay(%@, %@)", args[@"refId"], args[@"overlay1"], args[@"overlay2"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1441,16 +1745,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::rendererForOverlay": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::rendererForOverlay(%@)", args);
+          }
+      
           // args
           // ref arg
           id<MAOverlay> overlay = (id<MAOverlay>) (args[@"overlay"] == [NSNull null] ? nil : args[@"overlay"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::rendererForOverlay(%@)", args[@"refId"], args[@"overlay"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1463,6 +1770,10 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::showOverlays_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::showOverlays_animated(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* overlays = (NSArray<NSObject*>*) args[@"overlays"];
@@ -1471,10 +1782,9 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::showOverlays(%@, %@)", args[@"refId"], args[@"overlays"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1487,22 +1797,33 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::showOverlays_edgePadding_animated": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::showOverlays_edgePadding_animated(%@)", args);
+          }
+      
           // args
           // list arg
           NSArray<NSObject*>* overlays = (NSArray<NSObject*>*) args[@"overlays"];
           // struct arg
           NSValue* insetsValue = (NSValue*) args[@"insets"];
           UIEdgeInsets insets;
-          [insetsValue getValue:&insets];
+          if (insetsValue != nil && (NSNull*) insetsValue != [NSNull null]) {
+            [insetsValue getValue:&insets];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"insets不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL animated = [args[@"animated"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::showOverlays(%@, %@, %@)", args[@"refId"], args[@"overlays"], args[@"insets"], args[@"animated"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1515,20 +1836,31 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::getHittedPolylinesWith_traverseAll": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::getHittedPolylinesWith_traverseAll(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* tappedCoordValue = (NSValue*) args[@"tappedCoord"];
           CLLocationCoordinate2D tappedCoord;
-          [tappedCoordValue getValue:&tappedCoord];
+          if (tappedCoordValue != nil && (NSNull*) tappedCoordValue != [NSNull null]) {
+            [tappedCoordValue getValue:&tappedCoord];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"tappedCoord不能为null"]);
+            return;
+          }
+      
           // jsonable arg
           BOOL traverseAll = [args[@"traverseAll"] boolValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::getHittedPolylinesWith(%@, %@)", args[@"refId"], args[@"tappedCoord"], args[@"traverseAll"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1541,18 +1873,29 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setIndoorMapControlOrigin": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setIndoorMapControlOrigin(%@)", args);
+          }
+      
           // args
           // struct arg
           NSValue* originValue = (NSValue*) args[@"origin"];
           CGPoint origin;
-          [originValue getValue:&origin];
+          if (originValue != nil && (NSNull*) originValue != [NSNull null]) {
+            [originValue getValue:&origin];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"origin不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setIndoorMapControlOrigin(%@)", args[@"refId"], args[@"origin"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1565,16 +1908,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCurrentIndoorMapFloorIndex": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCurrentIndoorMapFloorIndex(%@)", args);
+          }
+      
           // args
           // jsonable arg
           NSInteger floorIndex = [args[@"floorIndex"] longValue];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCurrentIndoorMapFloorIndex(%@)", args[@"refId"], args[@"floorIndex"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1587,15 +1933,18 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::clearIndoorMapCache": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::clearIndoorMapCache(%@)", args);
+          }
+      
           // args
       
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::clearIndoorMapCache()", args[@"refId"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1608,16 +1957,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCustomMapStyleWithWebData": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCustomMapStyleWithWebData(%@)", args);
+          }
+      
           // args
           // ref arg
           NSData* data = (NSData*) (args[@"data"] == [NSNull null] ? nil : args[@"data"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCustomMapStyleWithWebData(%@)", args[@"refId"], args[@"data"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1630,16 +1982,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCustomTextureResourcePath": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCustomTextureResourcePath(%@)", args);
+          }
+      
           // args
           // jsonable arg
           NSString* customTextureResourcePath = (NSString*) args[@"customTextureResourcePath"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCustomTextureResourcePath(%@)", args[@"refId"], args[@"customTextureResourcePath"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1652,16 +2007,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCustomMapStyleID": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCustomMapStyleID(%@)", args);
+          }
+      
           // args
           // jsonable arg
           NSString* customMapStyleID = (NSString*) args[@"customMapStyleID"];
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCustomMapStyleID(%@)", args[@"refId"], args[@"customMapStyleID"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1674,16 +2032,19 @@ extern BOOL enableLog;
           methodResult(__result__);
       },
       @"MAMapView::setCustomMapStyleOptions": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+          if (enableLog) {
+              NSLog(@"fluttify-objc: MAMapView::setCustomMapStyleOptions(%@)", args);
+          }
+      
           // args
           // ref arg
           MAMapCustomStyleOptions* styleOptions = (MAMapCustomStyleOptions*) (args[@"styleOptions"] == [NSNull null] ? nil : args[@"styleOptions"]);
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
-      
-          // print log
-          if (enableLog) {
-              NSLog(@"fluttify-objc: MAMapView@%@::setCustomMapStyleOptions(%@)", args[@"refId"], args[@"styleOptions"]);
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
           }
       
           // invoke native method
@@ -1703,6 +2064,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MAMapType result = ref.mapType;
@@ -1721,6 +2086,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CLLocationCoordinate2D result = ref.centerCoordinate;
@@ -1739,6 +2108,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MACoordinateRegion result = ref.region;
@@ -1757,6 +2130,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MAMapRect result = ref.visibleMapRect;
@@ -1775,6 +2152,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MACoordinateRegion result = ref.limitRegion;
@@ -1793,6 +2174,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MAMapRect result = ref.limitMapRect;
@@ -1811,6 +2196,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGFloat result = ref.zoomLevel;
@@ -1829,6 +2218,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGFloat result = ref.minZoomLevel;
@@ -1847,6 +2240,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGFloat result = ref.maxZoomLevel;
@@ -1865,6 +2262,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGFloat result = ref.rotationDegree;
@@ -1883,6 +2284,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGFloat result = ref.cameraDegree;
@@ -1901,6 +2306,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.zoomingInPivotsAroundAnchorPoint;
@@ -1919,6 +2328,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.zoomEnabled;
@@ -1937,6 +2350,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.scrollEnabled;
@@ -1955,6 +2372,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.rotateEnabled;
@@ -1973,6 +2394,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.rotateCameraEnabled;
@@ -1991,6 +2416,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.skyModelEnable;
@@ -2009,6 +2438,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsBuildings;
@@ -2027,6 +2460,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsLabels;
@@ -2045,6 +2482,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showTraffic;
@@ -2063,6 +2504,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGFloat result = ref.trafficRatio;
@@ -2081,6 +2526,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.touchPOIEnabled;
@@ -2099,6 +2548,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsCompass;
@@ -2117,6 +2570,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGPoint result = ref.compassOrigin;
@@ -2135,6 +2592,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGSize result = ref.compassSize;
@@ -2153,6 +2614,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsScale;
@@ -2171,6 +2636,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGPoint result = ref.scaleOrigin;
@@ -2189,6 +2658,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGSize result = ref.scaleSize;
@@ -2207,6 +2680,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGPoint result = ref.logoCenter;
@@ -2225,6 +2702,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGSize result = ref.logoSize;
@@ -2243,6 +2724,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           double result = ref.metersPerPointForCurrentZoom;
@@ -2261,6 +2746,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.isAbroad;
@@ -2279,6 +2768,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSUInteger result = ref.maxRenderFrame;
@@ -2297,6 +2790,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.isAllowDecreaseFrame;
@@ -2315,6 +2812,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.openGLESDisabled;
@@ -2333,6 +2834,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGPoint result = ref.screenAnchor;
@@ -2351,6 +2856,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSNumber* result = ref.showsWorldMap;
@@ -2369,6 +2878,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSNumber* result = ref.mapLanguage;
@@ -2387,6 +2900,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSArray* result = ref.annotations;
@@ -2405,6 +2922,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSArray* result = ref.selectedAnnotations;
@@ -2423,6 +2944,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGRect result = ref.annotationVisibleRect;
@@ -2441,6 +2966,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.allowsAnnotationViewSorting;
@@ -2459,6 +2988,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsUserLocation;
@@ -2477,6 +3010,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MAUserLocation* result = ref.userLocation;
@@ -2495,6 +3032,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.customizeUserLocationAccuracyCircleRepresentation;
@@ -2513,6 +3054,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MACircle* result = ref.userLocationAccuracyCircle;
@@ -2531,6 +3076,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           MAUserTrackingMode result = ref.userTrackingMode;
@@ -2549,6 +3098,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.userLocationVisible;
@@ -2567,6 +3120,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CLLocationDistance result = ref.distanceFilter;
@@ -2585,6 +3142,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CLLocationAccuracy result = ref.desiredAccuracy;
@@ -2603,6 +3164,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CLLocationDegrees result = ref.headingFilter;
@@ -2621,6 +3186,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.pausesLocationUpdatesAutomatically;
@@ -2639,6 +3208,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.allowsBackgroundLocationUpdates;
@@ -2657,6 +3230,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           NSArray* result = ref.overlays;
@@ -2675,6 +3252,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsIndoorMap;
@@ -2693,6 +3274,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.showsIndoorMapControl;
@@ -2711,6 +3296,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           CGSize result = ref.indoorMapControlSize;
@@ -2729,6 +3318,10 @@ extern BOOL enableLog;
       
           // ref object
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           // invoke native method
           BOOL result = ref.customMapStyleEnabled;
@@ -2750,6 +3343,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.delegate = weakSelf;
           methodResult(@"success");
@@ -2767,6 +3364,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.mapType = mapType;
           methodResult(@"success");
@@ -2782,10 +3383,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* centerCoordinateValue = (NSValue*) args[@"centerCoordinate"];
           CLLocationCoordinate2D centerCoordinate;
-          [centerCoordinateValue getValue:&centerCoordinate];
+          if (centerCoordinateValue != nil && (NSNull*) centerCoordinateValue != [NSNull null]) {
+            [centerCoordinateValue getValue:&centerCoordinate];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"centerCoordinate不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.centerCoordinate = centerCoordinate;
           methodResult(@"success");
@@ -2801,10 +3414,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* regionValue = (NSValue*) args[@"region"];
           MACoordinateRegion region;
-          [regionValue getValue:&region];
+          if (regionValue != nil && (NSNull*) regionValue != [NSNull null]) {
+            [regionValue getValue:&region];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"region不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.region = region;
           methodResult(@"success");
@@ -2820,10 +3445,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* visibleMapRectValue = (NSValue*) args[@"visibleMapRect"];
           MAMapRect visibleMapRect;
-          [visibleMapRectValue getValue:&visibleMapRect];
+          if (visibleMapRectValue != nil && (NSNull*) visibleMapRectValue != [NSNull null]) {
+            [visibleMapRectValue getValue:&visibleMapRect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"visibleMapRect不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.visibleMapRect = visibleMapRect;
           methodResult(@"success");
@@ -2839,10 +3476,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* limitRegionValue = (NSValue*) args[@"limitRegion"];
           MACoordinateRegion limitRegion;
-          [limitRegionValue getValue:&limitRegion];
+          if (limitRegionValue != nil && (NSNull*) limitRegionValue != [NSNull null]) {
+            [limitRegionValue getValue:&limitRegion];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"limitRegion不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.limitRegion = limitRegion;
           methodResult(@"success");
@@ -2858,10 +3507,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* limitMapRectValue = (NSValue*) args[@"limitMapRect"];
           MAMapRect limitMapRect;
-          [limitMapRectValue getValue:&limitMapRect];
+          if (limitMapRectValue != nil && (NSNull*) limitMapRectValue != [NSNull null]) {
+            [limitMapRectValue getValue:&limitMapRect];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"limitMapRect不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.limitMapRect = limitMapRect;
           methodResult(@"success");
@@ -2879,6 +3540,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.zoomLevel = zoomLevel;
           methodResult(@"success");
@@ -2896,6 +3561,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.minZoomLevel = minZoomLevel;
           methodResult(@"success");
@@ -2913,6 +3582,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.maxZoomLevel = maxZoomLevel;
           methodResult(@"success");
@@ -2930,6 +3603,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.rotationDegree = rotationDegree;
           methodResult(@"success");
@@ -2947,6 +3624,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.cameraDegree = cameraDegree;
           methodResult(@"success");
@@ -2964,6 +3645,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.zoomingInPivotsAroundAnchorPoint = zoomingInPivotsAroundAnchorPoint;
           methodResult(@"success");
@@ -2981,6 +3666,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.zoomEnabled = zoomEnabled;
           methodResult(@"success");
@@ -2998,6 +3687,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.scrollEnabled = scrollEnabled;
           methodResult(@"success");
@@ -3015,6 +3708,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.rotateEnabled = rotateEnabled;
           methodResult(@"success");
@@ -3032,6 +3729,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.rotateCameraEnabled = rotateCameraEnabled;
           methodResult(@"success");
@@ -3049,6 +3750,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.skyModelEnable = skyModelEnable;
           methodResult(@"success");
@@ -3066,6 +3771,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsBuildings = showsBuildings;
           methodResult(@"success");
@@ -3083,6 +3792,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsLabels = showsLabels;
           methodResult(@"success");
@@ -3100,6 +3813,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showTraffic = showTraffic;
           methodResult(@"success");
@@ -3117,6 +3834,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.trafficRatio = trafficRatio;
           methodResult(@"success");
@@ -3134,6 +3855,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.touchPOIEnabled = touchPOIEnabled;
           methodResult(@"success");
@@ -3151,6 +3876,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsCompass = showsCompass;
           methodResult(@"success");
@@ -3166,10 +3895,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* compassOriginValue = (NSValue*) args[@"compassOrigin"];
           CGPoint compassOrigin;
-          [compassOriginValue getValue:&compassOrigin];
+          if (compassOriginValue != nil && (NSNull*) compassOriginValue != [NSNull null]) {
+            [compassOriginValue getValue:&compassOrigin];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"compassOrigin不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.compassOrigin = compassOrigin;
           methodResult(@"success");
@@ -3187,6 +3928,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsScale = showsScale;
           methodResult(@"success");
@@ -3202,10 +3947,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* scaleOriginValue = (NSValue*) args[@"scaleOrigin"];
           CGPoint scaleOrigin;
-          [scaleOriginValue getValue:&scaleOrigin];
+          if (scaleOriginValue != nil && (NSNull*) scaleOriginValue != [NSNull null]) {
+            [scaleOriginValue getValue:&scaleOrigin];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"scaleOrigin不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.scaleOrigin = scaleOrigin;
           methodResult(@"success");
@@ -3221,10 +3978,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* logoCenterValue = (NSValue*) args[@"logoCenter"];
           CGPoint logoCenter;
-          [logoCenterValue getValue:&logoCenter];
+          if (logoCenterValue != nil && (NSNull*) logoCenterValue != [NSNull null]) {
+            [logoCenterValue getValue:&logoCenter];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"logoCenter不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.logoCenter = logoCenter;
           methodResult(@"success");
@@ -3242,6 +4011,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.maxRenderFrame = maxRenderFrame;
           methodResult(@"success");
@@ -3259,6 +4032,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.isAllowDecreaseFrame = isAllowDecreaseFrame;
           methodResult(@"success");
@@ -3276,6 +4053,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.openGLESDisabled = openGLESDisabled;
           methodResult(@"success");
@@ -3291,10 +4072,22 @@ extern BOOL enableLog;
           // struct arg
           NSValue* screenAnchorValue = (NSValue*) args[@"screenAnchor"];
           CGPoint screenAnchor;
-          [screenAnchorValue getValue:&screenAnchor];
+          if (screenAnchorValue != nil && (NSNull*) screenAnchorValue != [NSNull null]) {
+            [screenAnchorValue getValue:&screenAnchor];
+          } else {
+            methodResult([FlutterError errorWithCode:@"参数非法"
+                                             message:@"参数非法"
+                                             details:@"screenAnchor不能为null"]);
+            return;
+          }
+      
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.screenAnchor = screenAnchor;
           methodResult(@"success");
@@ -3312,6 +4105,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsWorldMap = showsWorldMap;
           methodResult(@"success");
@@ -3329,6 +4126,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.mapLanguage = mapLanguage;
           methodResult(@"success");
@@ -3346,6 +4147,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.selectedAnnotations = selectedAnnotations;
           methodResult(@"success");
@@ -3363,6 +4168,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.allowsAnnotationViewSorting = allowsAnnotationViewSorting;
           methodResult(@"success");
@@ -3380,6 +4189,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsUserLocation = showsUserLocation;
           methodResult(@"success");
@@ -3397,6 +4210,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.customizeUserLocationAccuracyCircleRepresentation = customizeUserLocationAccuracyCircleRepresentation;
           methodResult(@"success");
@@ -3414,6 +4231,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.userTrackingMode = userTrackingMode;
           methodResult(@"success");
@@ -3431,6 +4252,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.distanceFilter = distanceFilter;
           methodResult(@"success");
@@ -3448,6 +4273,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.desiredAccuracy = desiredAccuracy;
           methodResult(@"success");
@@ -3465,6 +4294,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.headingFilter = headingFilter;
           methodResult(@"success");
@@ -3482,6 +4315,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.pausesLocationUpdatesAutomatically = pausesLocationUpdatesAutomatically;
           methodResult(@"success");
@@ -3499,6 +4336,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.allowsBackgroundLocationUpdates = allowsBackgroundLocationUpdates;
           methodResult(@"success");
@@ -3516,6 +4357,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsIndoorMap = showsIndoorMap;
           methodResult(@"success");
@@ -3533,6 +4378,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.showsIndoorMapControl = showsIndoorMapControl;
           methodResult(@"success");
@@ -3550,6 +4399,10 @@ extern BOOL enableLog;
       
           // ref
           MAMapView* ref = (MAMapView*) args[@"__this__"];
+          if ((NSNull *) ref == [NSNull null] || ref == nil) {
+              methodResult([FlutterError errorWithCode:@"目标对象为nil" message:@"目标对象为nil" details:@"目标对象为nil"]);
+              return;
+          }
       
           ref.customMapStyleEnabled = customMapStyleEnabled;
           methodResult(@"success");
@@ -3564,7 +4417,7 @@ extern BOOL enableLog;
 - (void)traceManager : (MATraceManager*)manager didTrace: (NSArray<CLLocation*>*)locations correct: (NSArray<MATracePoint*>*)tracePoints distance: (double)distance withError: (NSError*)error
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3593,7 +4446,7 @@ extern BOOL enableLog;
 - (void)mapViewRequireLocationAuth : (CLLocationManager*)locationManager
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MATraceDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3614,7 +4467,7 @@ extern BOOL enableLog;
 - (void)multiPointOverlayRenderer : (MAMultiPointOverlayRenderer*)renderer didItemTapped: (MAMultiPointItem*)item
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMultiPointOverlayRendererDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMultiPointOverlayRendererDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3637,7 +4490,7 @@ extern BOOL enableLog;
 - (void)mapViewRegionChanged : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3658,7 +4511,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionWillChangeAnimated: (BOOL)animated
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3681,7 +4534,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionDidChangeAnimated: (BOOL)animated
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3704,7 +4557,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionWillChangeAnimated: (BOOL)animated wasUserAction: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3729,7 +4582,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView regionDidChangeAnimated: (BOOL)animated wasUserAction: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3754,7 +4607,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapWillMoveByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3777,7 +4630,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapDidMoveByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3800,7 +4653,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapWillZoomByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3823,7 +4676,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView mapDidZoomByUser: (BOOL)wasUserAction
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3846,7 +4699,7 @@ extern BOOL enableLog;
 - (void)mapViewWillStartLoadingMap : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3867,7 +4720,7 @@ extern BOOL enableLog;
 - (void)mapViewDidFinishLoadingMap : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3888,7 +4741,7 @@ extern BOOL enableLog;
 - (void)mapViewDidFailLoadingMap : (MAMapView*)mapView withError: (NSError*)error
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3911,7 +4764,7 @@ extern BOOL enableLog;
 - (MAAnnotationView*)mapView : (MAMapView*)mapView viewForAnnotation: (id<MAAnnotation>)annotation
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -3937,6 +4790,8 @@ extern BOOL enableLog;
   
   ////////////////////////////如果需要手写代码, 请写在这里/////////////////////////////
   UIImage* icon = (UIImage *) objc_getAssociatedObject(annotation, (const void *) 1);
+  NSArray<UIImage*>* icons = (NSArray<UIImage*>*) objc_getAssociatedObject(annotation, (const void *) 11);
+  NSNumber* duration = (NSNumber*) objc_getAssociatedObject(annotation, (const void *) 12);
   NSNumber* draggable = objc_getAssociatedObject(annotation, (const void *) 2);
   NSNumber* rotateAngle = objc_getAssociatedObject(annotation, (const void *) 3);
   NSNumber* infoWindowEnabled = objc_getAssociatedObject(annotation, (const void *) 4);
@@ -3965,6 +4820,11 @@ extern BOOL enableLog;
               annotationView = [[MAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"customAnnotationReuseIndentifier"];
           }
       }
+      if (icons != nil && (NSNull*) icon != [NSNull null]) {
+          annotationView.imageView.animationImages = icons;
+          annotationView.imageView.animationDuration = [duration doubleValue];
+          [annotationView.imageView startAnimating];
+      }
       if (icon != nil && (NSNull*) icon != [NSNull null]) annotationView.image = icon;
       if (draggable != nil) annotationView.draggable = [draggable boolValue];
       if (infoWindowEnabled != nil) annotationView.canShowCallout = [infoWindowEnabled boolValue];
@@ -3991,7 +4851,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAddAnnotationViews: (NSArray*)views
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4014,7 +4874,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didSelectAnnotationView: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4037,7 +4897,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didDeselectAnnotationView: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4060,7 +4920,7 @@ extern BOOL enableLog;
 - (void)mapViewWillStartLocatingUser : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4081,7 +4941,7 @@ extern BOOL enableLog;
 - (void)mapViewDidStopLocatingUser : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4102,7 +4962,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didUpdateUserLocation: (MAUserLocation*)userLocation updatingLocation: (BOOL)updatingLocation
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4127,7 +4987,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didFailToLocateUserWithError: (NSError*)error
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4150,7 +5010,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView annotationView: (MAAnnotationView*)view didChangeDragState: (MAAnnotationViewDragState)newState fromOldState: (MAAnnotationViewDragState)oldState
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4177,7 +5037,7 @@ extern BOOL enableLog;
 - (MAOverlayRenderer*)mapView : (MAMapView*)mapView rendererForOverlay: (id<MAOverlay>)overlay
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4337,7 +5197,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAddOverlayRenderers: (NSArray*)overlayRenderers
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4360,7 +5220,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView annotationView: (MAAnnotationView*)view calloutAccessoryControlTapped: (UIControl*)control
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4385,7 +5245,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAnnotationViewCalloutTapped: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4408,7 +5268,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didAnnotationViewTapped: (MAAnnotationView*)view
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4431,7 +5291,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didChangeUserTrackingMode: (MAUserTrackingMode)mode animated: (BOOL)animated
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4456,7 +5316,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didChangeOpenGLESDisabled: (BOOL)openGLESDisabled
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4479,7 +5339,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didTouchPois: (NSArray*)pois
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4502,7 +5362,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didSingleTappedAtCoordinate: (CLLocationCoordinate2D)coordinate
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4526,7 +5386,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didLongPressedAtCoordinate: (CLLocationCoordinate2D)coordinate
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4550,7 +5410,7 @@ extern BOOL enableLog;
 - (void)mapInitComplete : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4571,7 +5431,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didIndoorMapShowed: (MAIndoorInfo*)indoorInfo
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4594,7 +5454,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didIndoorMapFloorIndexChanged: (MAIndoorInfo*)indoorInfo
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4617,7 +5477,7 @@ extern BOOL enableLog;
 - (void)mapView : (MAMapView*)mapView didIndoorMapHidden: (MAIndoorInfo*)indoorInfo
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4640,7 +5500,7 @@ extern BOOL enableLog;
 - (void)offlineDataWillReload : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log
@@ -4661,7 +5521,7 @@ extern BOOL enableLog;
 - (void)offlineDataDidReload : (MAMapView*)mapView
 {
   FlutterMethodChannel *channel = [FlutterMethodChannel
-        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@", @(_view.hash)]
+        methodChannelWithName:[NSString stringWithFormat:@"MAMapViewDelegate::Callback@%@:%@", NSStringFromClass([_view class]), @(_view.hash)]
               binaryMessenger:[_registrar messenger]
                         codec:[FlutterStandardMethodCodec codecWithReaderWriter:[[FluttifyReaderWriter alloc] init]]];
   // print log

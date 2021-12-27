@@ -24,34 +24,37 @@ class MAOfflineItemCommonCity extends MAOfflineCity  {
 
   //region creators
   static Future<MAOfflineItemCommonCity> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAOfflineItemCommonCity', {'init': init});
-    final object = MAOfflineItemCommonCity()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAOfflineItemCommonCity',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAOfflineItemCommonCity>(__result__);
   }
   
   static Future<List<MAOfflineItemCommonCity>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAOfflineItemCommonCity', {'length': length, 'init': init});
-  
-    final List<MAOfflineItemCommonCity> typedResult = resultBatch.map((result) => MAOfflineItemCommonCity()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAOfflineItemCommonCity',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAOfflineItemCommonCity>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<MAOfflineItem> get_province() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAOfflineItemCommonCity::get_province", {'__this__': this});
-    return __result__ == null ? null : (MAOfflineItem()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAOfflineItemCommonCity::get_province", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAOfflineItem>(__result__);
   }
   
   //endregion
 
   //region setters
   Future<void> set_province(MAOfflineItem province) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAOfflineItemCommonCity::set_province', <String, dynamic>{'__this__': this, "province": province});
+    await kAmapMapFluttifyChannel.invokeMethod('MAOfflineItemCommonCity::set_province', <String, dynamic>{'__this__': this, "province": province});
   
   
   }
@@ -71,17 +74,15 @@ class MAOfflineItemCommonCity extends MAOfflineCity  {
 extension MAOfflineItemCommonCity_Batch on List<MAOfflineItemCommonCity> {
   //region getters
   Future<List<MAOfflineItem>> get_province_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAOfflineItemCommonCity::get_province_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAOfflineItem()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAOfflineItemCommonCity::get_province_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<MAOfflineItem>(__result__))?.cast<MAOfflineItem>()?.toList();
   }
   
   //endregion
 
   //region setters
   Future<void> set_province_batch(List<MAOfflineItem> province) async {
-    await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec())).invokeMethod('MAOfflineItemCommonCity::set_province_batch', [for (int __i__ = 0; __i__ < length; __i__++) {'__this__': this[__i__], "province": province[__i__]}]);
+    await kAmapMapFluttifyChannel.invokeMethod('MAOfflineItemCommonCity::set_province_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {'__this__': this[__i__], "province": province[__i__]}]);
   
   
   }

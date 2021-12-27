@@ -15,6 +15,10 @@ dependencies:
   sliding_up_panel: ^1.0.2
   flutter_easyrefresh: ^2.1.1
 
+#dependency_overrides:
+#  foundation_fluttify:
+#    path: /Users/yohom/Github/Me/All/fluttify/fluttify_infra/foundation_fluttify
+
 dev_dependencies:
   test: any
   flutter_test:

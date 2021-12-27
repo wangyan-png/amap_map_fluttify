@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 part of 'amap_view.widget.dart';
 
+final controller = StreamController.broadcast();
+
 class _IOSMapDelegate extends NSObject
     with MAMapViewDelegate, MAMultiPointOverlayRendererDelegate {
   OnMarkerClicked onMarkerClicked;
@@ -13,7 +15,6 @@ class _IOSMapDelegate extends NSObject
   OnMapMove onMapMoving;
   OnMapMove onMapMoveEnd;
   _OnRequireAlwaysAuth onRequireAlwaysAuth;
-  OnLocationChange onLocationChange;
   OnMarkerClicked onInfoWindowClicked;
   OnMultiPointClicked onMultiPointClicked;
 
@@ -54,36 +55,24 @@ class _IOSMapDelegate extends NSObject
       newState,
       oldState,
     );
+    final annotation = AmapMapFluttifyIOSAs<MAPointAnnotation>(
+      await view.get_annotation(viewChannel: false),
+    );
     if (onMarkerDragStarted != null &&
         newState ==
             MAAnnotationViewDragState.MAAnnotationViewDragStateStarting) {
-      await onMarkerDragStarted(
-        Marker.ios(
-          await view.get_annotation(viewChannel: false),
-          iosController,
-        ),
-      );
+      await onMarkerDragStarted(Marker.ios(annotation, iosController));
     }
 
     if (onMarkerDragging != null &&
         newState ==
             MAAnnotationViewDragState.MAAnnotationViewDragStateDragging) {
-      await onMarkerDragging(
-        Marker.ios(
-          await view.get_annotation(viewChannel: false),
-          iosController,
-        ),
-      );
+      await onMarkerDragging(Marker.ios(annotation, iosController));
     }
 
     if (onMarkerDragEnded != null &&
         newState == MAAnnotationViewDragState.MAAnnotationViewDragStateEnding) {
-      await onMarkerDragEnded(
-        Marker.ios(
-          await view.get_annotation(viewChannel: false),
-          iosController,
-        ),
-      );
+      await onMarkerDragEnded(Marker.ios(annotation, iosController));
     }
   }
 
@@ -151,6 +140,7 @@ class _IOSMapDelegate extends NSObject
         isAbroad: await mapView.get_isAbroad(),
       ));
     }
+    controller.add(1);
   }
 
   @override
@@ -223,22 +213,6 @@ class _IOSMapDelegate extends NSObject
   }
 
   @override
-  Future<void> mapView_didUpdateUserLocation_updatingLocation(
-    MAMapView mapView,
-    MAUserLocation userLocation,
-    bool updatingLocation,
-  ) async {
-    await super.mapView_didUpdateUserLocation_updatingLocation(
-      mapView,
-      userLocation,
-      updatingLocation,
-    );
-    if (onLocationChange != null) {
-      await onLocationChange(MapLocation.ios(userLocation));
-    }
-  }
-
-  @override
   Future<void> mapView_didAnnotationViewCalloutTapped(
     MAMapView mapView,
     MAAnnotationView view,
@@ -262,10 +236,10 @@ class _IOSMapDelegate extends NSObject
   ) async {
     await super.mapView_didAddOverlayRenderers(mapView, overlayRenderers);
     if (overlayRenderers.length == 1 &&
-        await TypeOpAmapMapFluttifyIOS(overlayRenderers[0])
-            .is__<MAMultiPointOverlayRenderer>()) {
-      final multiPointRenderer = TypeOpAmapMapFluttifyIOS(overlayRenderers[0])
-          .as__<MAMultiPointOverlayRenderer>();
+        await AmapMapFluttifyIOSIs<MAMultiPointOverlayRenderer>(
+            overlayRenderers[0])) {
+      final MAMultiPointOverlayRenderer multiPointRenderer =
+          AmapMapFluttifyIOSAs(overlayRenderers[0]);
       await multiPointRenderer.set_delegate(this);
     }
   }
@@ -308,7 +282,6 @@ class _AndroidMapDelegate extends java_lang_Object
   OnMapClicked onMapClicked;
   OnMapClicked onMapLongClicked;
   ValueChanged<Uint8List> onSnapshot;
-  OnLocationChange onLocationChange;
   OnMarkerClicked onInfoWindowClicked;
   OnMultiPointClicked onMultiPointClicked;
 
@@ -422,16 +395,8 @@ class _AndroidMapDelegate extends java_lang_Object
       android_graphics_Bitmap var1) async {
     await super.onMapScreenShot__android_graphics_Bitmap(var1);
     if (onSnapshot != null) {
-      await onSnapshot(await var1.data);
+      onSnapshot(await var1.data);
       await var1.recycle(); // 回收原生的Bitmap, 由于没有后续操作, 异步执行也无妨.
-    }
-  }
-
-  @override
-  Future<void> onMyLocationChange(android_location_Location var1) async {
-    await super.onMyLocationChange(var1);
-    if (onLocationChange != null) {
-      await onLocationChange(MapLocation.android(var1));
     }
   }
 

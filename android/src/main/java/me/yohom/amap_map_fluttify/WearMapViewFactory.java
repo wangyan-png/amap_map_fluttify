@@ -302,7 +302,7 @@ class WearMapViewFactory extends PlatformViewFactory {
             try {
                 __this__.setOnDismissCallbackListener(new com.amap.api.maps.WearMapView.OnDismissCallback() {
                     // method channel
-                    MethodChannel callbackChannel = new MethodChannel(messenger, "com.amap.api.maps.WearMapView::setOnDismissCallbackListener::Callback@" + String.valueOf(System.identityHashCode(__this__)), new StandardMethodCodec(new FluttifyMessageCodec()));
+                    MethodChannel callbackChannel = new MethodChannel(messenger, "com.amap.api.maps.WearMapView::setOnDismissCallbackListener::Callback@" + "com.amap.api.maps.WearMapView:" + String.valueOf(System.identityHashCode(__this__)), new StandardMethodCodec(new FluttifyMessageCodec()));
                     android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
         
                     // call dart method
@@ -465,7 +465,7 @@ class WearMapViewFactory extends PlatformViewFactory {
 
         // 同时存放viewId和refId的对象, 供后续viewId转refId使用
         getHEAP().put(String.valueOf(Integer.MAX_VALUE - id), view);
-        getHEAP().put(String.valueOf(System.identityHashCode(view)), view);
+        getHEAP().put("com.amap.api.maps.WearMapView:" + String.valueOf(System.identityHashCode(view)), view);
         return new PlatformView() {
 
             // add to HEAP

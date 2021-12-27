@@ -21,8 +21,8 @@ class DrawPolylineScreen extends StatefulWidget {
 class _DrawPolylineScreenState extends State<DrawPolylineScreen>
     with NextLatLng {
   AmapController _controller;
-  Polyline _currentPolyline;
-  PlaybackTrace _playbackTrace;
+  IPolyline _currentPolyline;
+  IPlaybackTrace _playbackTrace;
   List<LatLng> _pointList = [];
 
   @override
@@ -57,18 +57,43 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                 ListTile(
                   title: Center(child: Text('添加线')),
                   onTap: () async {
-                    _pointList = [
-                      getNextLatLng(),
-                      getNextLatLng(),
-                      getNextLatLng(),
-                      getNextLatLng(),
-                    ];
-                    _currentPolyline =
-                        await _controller?.addPolyline(PolylineOption(
-                      latLngList: _pointList,
+                    _pointList = getNextBatchLatLng(3);
+
+                    await _controller.addPolyline(PolylineOption(
+                      coordinateList: [
+                        LatLng(39.999391, 116.135972),
+                        LatLng(39.898323, 116.057694),
+                        LatLng(39.900430, 116.265061),
+                        LatLng(39.955192, 116.140092),
+                      ],
+                      strokeColor: Colors.red,
+                      width: 10,
+                    ));
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('平滑处理')),
+                  onTap: () async {
+                    if (_currentPolyline == null) {
+                      toast('请先添加对比折线');
+                      return;
+                    }
+                    final smooth =
+                        await AmapService.instance.pathSmooth(_pointList);
+                    await _controller?.addPolyline(PolylineOption(
+                      coordinateList: smooth,
                       width: 10,
                       strokeColor: Colors.green,
                     ));
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('将地图缩放至可以显示所有Marker')),
+                  onTap: () async {
+                    await _controller?.zoomToSpan(
+                      _pointList,
+                      padding: EdgeInsets.only(top: 100),
+                    );
                   },
                 ),
                 ListTile(
@@ -77,7 +102,7 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                     await _currentPolyline?.remove();
                     _currentPolyline =
                         await _controller?.addPolyline(PolylineOption(
-                      latLngList: [
+                      coordinateList: [
                         getNextLatLng(),
                         getNextLatLng(),
                         getNextLatLng(),
@@ -93,9 +118,41 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                   onTap: () => _currentPolyline?.remove(),
                 ),
                 ListTile(
+                  title: Center(child: Text('绘制北京行政区域边界')),
+                  onTap: () => _controller.addDistrictOutline('北京'),
+                ),
+                ListTile(
+                  title: Center(child: Text('添加回放轨迹')),
+                  onTap: () async {
+                    final result = await AmapSearch.instance.searchDriveRoute(
+                      from: LatLng(39.958245, 116.330929),
+                      to: LatLng(39.915599, 116.42912),
+                    );
+                    final pathList = await result.drivePathList;
+                    final stepList = [
+                      for (final path in pathList) ...await path.driveStepList
+                    ];
+                    final coordinateList = [
+                      for (final step in stepList) ...await step.polyline
+                    ];
+                    _playbackTrace = await _controller.addPlaybackTrace(
+                      coordinateList,
+                      iconProvider: _assetsIcon1,
+                      duration: Duration(seconds: 10),
+                    );
+                  },
+                ),
+                ListTile(
                   title: Center(child: Text('删除回放轨迹')),
                   onTap: () async {
                     _playbackTrace?.remove();
+                  },
+                ),
+                ListTile(
+                  title: Center(child: Text('给折线添加点')),
+                  onTap: () async {
+                    _pointList = [..._pointList, getNextLatLng()];
+                    await _currentPolyline?.setCoordinateList(_pointList);
                   },
                 ),
                 DiscreteSetting(
@@ -125,7 +182,7 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                     await _currentPolyline?.remove();
                     _currentPolyline =
                         await _controller?.addPolyline(PolylineOption(
-                      latLngList: [
+                      coordinateList: [
                         getNextLatLng(),
                         getNextLatLng(),
                         getNextLatLng(),
@@ -160,7 +217,7 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                     await _currentPolyline?.remove();
                     _currentPolyline =
                         await _controller?.addPolyline(PolylineOption(
-                      latLngList: [
+                      coordinateList: [
                         LatLng(39.999391, 116.135972),
                         LatLng(39.898323, 116.057694),
                         LatLng(39.900430, 116.265061),
@@ -195,7 +252,7 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                     await _currentPolyline?.remove();
                     _currentPolyline =
                         await _controller?.addPolyline(PolylineOption(
-                      latLngList: [
+                      coordinateList: [
                         getNextLatLng(),
                         getNextLatLng(),
                         getNextLatLng(),
@@ -206,7 +263,7 @@ class _DrawPolylineScreenState extends State<DrawPolylineScreen>
                       dashType: type,
                     ));
                   },
-                )
+                ),
               ],
             ),
           ),

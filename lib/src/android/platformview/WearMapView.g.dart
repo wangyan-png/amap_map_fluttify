@@ -46,8 +46,6 @@ class _com_amap_api_maps_WearMapView_AndroidState extends State<com_amap_api_map
       Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
     };
 
-    final messageCodec = FluttifyMessageCodec('amap_map_fluttify');
-
     // hybrid composition version.
     // PlatformViewLink(
     //   viewType: 'me.yohom/com.amap.api.maps.WearMapView',
@@ -67,7 +65,7 @@ class _com_amap_api_maps_WearMapView_AndroidState extends State<com_amap_api_map
     //       viewType: 'me.yohom/com.amap.api.maps.WearMapView',
     //       layoutDirection: TextDirection.ltr,
     //       creationParams: widget.params,
-    //       creationParamsCodec: messageCodec,
+    //       creationParamsCodec: kAmapMapFluttifyMessageCodec,
     //     )
     //       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
     //       ..addOnPlatformViewCreatedListener((id) => _onViewCreated(id))
@@ -78,7 +76,7 @@ class _com_amap_api_maps_WearMapView_AndroidState extends State<com_amap_api_map
       viewType: 'me.yohom/com.amap.api.maps.WearMapView',
       gestureRecognizers: gestureRecognizers,
       onPlatformViewCreated: _onViewCreated,
-      creationParamsCodec: messageCodec,
+      creationParamsCodec: kAmapMapFluttifyMessageCodec,
       creationParams: widget.params,
     );
   }
@@ -87,7 +85,7 @@ class _com_amap_api_maps_WearMapView_AndroidState extends State<com_amap_api_map
     // 碰到一个对象返回的hashCode为0的情况, 造成和这个id冲突了, 这里用一个magic number避免一下
     // 把viewId转换为refId再使用, 使其与其他对象统一
     final refId = await viewId2RefId((2147483647 - id).toString());
-    _controller = com_amap_api_maps_WearMapView()..refId = refId;
+    _controller = com_amap_api_maps_WearMapView()..refId = 'com.amap.api.maps.WearMapView:$refId';
     if (widget.onViewCreated != null) {
       widget.onViewCreated(_controller);
     }
@@ -96,7 +94,7 @@ class _com_amap_api_maps_WearMapView_AndroidState extends State<com_amap_api_map
   @override
   void dispose() {
     if (widget.onDispose != null) {
-      widget.onDispose().then((_) => _controller.release__());
+      widget.onDispose().whenComplete(() => _controller.release__());
     } else {
       _controller.release__();
     }

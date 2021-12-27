@@ -17,19 +17,26 @@ extern BOOL enableLog;
     __weak __typeof(self)weakSelf = self;
     return @{
         @"MAMapRectIsEmpty::MAMapRectIsEmpty": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAMapRectIsEmpty::MAMapRectIsEmpty(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* rectValue = (NSValue*) args[@"rect"];
             MAMapRect rect;
-            [rectValue getValue:&rect];
+            if (rectValue != nil && (NSNull*) rectValue != [NSNull null]) {
+              [rectValue getValue:&rect];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"rect不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAMapRectIsEmpty::MAMapRectIsEmpty(%@)", args[@"rect"]);
-            }
         
             // invoke native method
             BOOL result = MAMapRectIsEmpty(rect);
@@ -41,19 +48,26 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAStringFromMapPoint::MAStringFromMapPoint": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAStringFromMapPoint::MAStringFromMapPoint(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* pointValue = (NSValue*) args[@"point"];
             MAMapPoint point;
-            [pointValue getValue:&point];
+            if (pointValue != nil && (NSNull*) pointValue != [NSNull null]) {
+              [pointValue getValue:&point];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"point不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAStringFromMapPoint::MAStringFromMapPoint(%@)", args[@"point"]);
-            }
         
             // invoke native method
             NSString* result = MAStringFromMapPoint(point);
@@ -65,19 +79,26 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAStringFromMapSize::MAStringFromMapSize": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAStringFromMapSize::MAStringFromMapSize(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* sizeValue = (NSValue*) args[@"size"];
             MAMapSize size;
-            [sizeValue getValue:&size];
+            if (sizeValue != nil && (NSNull*) sizeValue != [NSNull null]) {
+              [sizeValue getValue:&size];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"size不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAStringFromMapSize::MAStringFromMapSize(%@)", args[@"size"]);
-            }
         
             // invoke native method
             NSString* result = MAStringFromMapSize(size);
@@ -89,19 +110,26 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAStringFromMapRect::MAStringFromMapRect": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAStringFromMapRect::MAStringFromMapRect(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* rectValue = (NSValue*) args[@"rect"];
             MAMapRect rect;
-            [rectValue getValue:&rect];
+            if (rectValue != nil && (NSNull*) rectValue != [NSNull null]) {
+              [rectValue getValue:&rect];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"rect不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAStringFromMapRect::MAStringFromMapRect(%@)", args[@"rect"]);
-            }
         
             // invoke native method
             NSString* result = MAStringFromMapRect(rect);
@@ -113,23 +141,38 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAGetDirectionFromCoords::MAGetDirectionFromCoords": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAGetDirectionFromCoords::MAGetDirectionFromCoords(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* fromCoordValue = (NSValue*) args[@"fromCoord"];
             CLLocationCoordinate2D fromCoord;
-            [fromCoordValue getValue:&fromCoord];
+            if (fromCoordValue != nil && (NSNull*) fromCoordValue != [NSNull null]) {
+              [fromCoordValue getValue:&fromCoord];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"fromCoord不能为null"]);
+              return;
+            }
+        
             // struct arg
             NSValue* toCoordValue = (NSValue*) args[@"toCoord"];
             CLLocationCoordinate2D toCoord;
-            [toCoordValue getValue:&toCoord];
+            if (toCoordValue != nil && (NSNull*) toCoordValue != [NSNull null]) {
+              [toCoordValue getValue:&toCoord];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"toCoord不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAGetDirectionFromCoords::MAGetDirectionFromCoords(%@, %@)", args[@"fromCoord"], args[@"toCoord"]);
-            }
         
             // invoke native method
             CLLocationDirection result = MAGetDirectionFromCoords(fromCoord, toCoord);
@@ -141,23 +184,38 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAGetDirectionFromPoints::MAGetDirectionFromPoints": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAGetDirectionFromPoints::MAGetDirectionFromPoints(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* fromPointValue = (NSValue*) args[@"fromPoint"];
             MAMapPoint fromPoint;
-            [fromPointValue getValue:&fromPoint];
+            if (fromPointValue != nil && (NSNull*) fromPointValue != [NSNull null]) {
+              [fromPointValue getValue:&fromPoint];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"fromPoint不能为null"]);
+              return;
+            }
+        
             // struct arg
             NSValue* toPointValue = (NSValue*) args[@"toPoint"];
             MAMapPoint toPoint;
-            [toPointValue getValue:&toPoint];
+            if (toPointValue != nil && (NSNull*) toPointValue != [NSNull null]) {
+              [toPointValue getValue:&toPoint];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"toPoint不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAGetDirectionFromPoints::MAGetDirectionFromPoints(%@, %@)", args[@"fromPoint"], args[@"toPoint"]);
-            }
         
             // invoke native method
             CLLocationDirection result = MAGetDirectionFromPoints(fromPoint, toPoint);
@@ -169,27 +227,50 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAGetDistanceFromPointToLine::MAGetDistanceFromPointToLine": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAGetDistanceFromPointToLine::MAGetDistanceFromPointToLine(%@)", args);
+            }
+        
             // args
             // struct arg
             NSValue* pointValue = (NSValue*) args[@"point"];
             MAMapPoint point;
-            [pointValue getValue:&point];
+            if (pointValue != nil && (NSNull*) pointValue != [NSNull null]) {
+              [pointValue getValue:&point];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"point不能为null"]);
+              return;
+            }
+        
             // struct arg
             NSValue* lineBeginValue = (NSValue*) args[@"lineBegin"];
             MAMapPoint lineBegin;
-            [lineBeginValue getValue:&lineBegin];
+            if (lineBeginValue != nil && (NSNull*) lineBeginValue != [NSNull null]) {
+              [lineBeginValue getValue:&lineBegin];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"lineBegin不能为null"]);
+              return;
+            }
+        
             // struct arg
             NSValue* lineEndValue = (NSValue*) args[@"lineEnd"];
             MAMapPoint lineEnd;
-            [lineEndValue getValue:&lineEnd];
+            if (lineEndValue != nil && (NSNull*) lineEndValue != [NSNull null]) {
+              [lineEndValue getValue:&lineEnd];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"lineEnd不能为null"]);
+              return;
+            }
+        
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAGetDistanceFromPointToLine::MAGetDistanceFromPointToLine(%@, %@, %@)", args[@"point"], args[@"lineBegin"], args[@"lineEnd"]);
-            }
         
             // invoke native method
             double result = MAGetDistanceFromPointToLine(point, lineBegin, lineEnd);
@@ -201,11 +282,15 @@ extern BOOL enableLog;
             methodResult(__result__);
         },
         @"MAPolylineHitTest::MAPolylineHitTest": ^(NSObject <FlutterPluginRegistrar> * registrar, id args, FlutterResult methodResult) {
+            if (enableLog) {
+                NSLog(@"fluttify-objc: MAPolylineHitTest::MAPolylineHitTest(%@)", args);
+            }
+        
             // args
             // list arg struct
             NSArray<NSValue*>* linePointsValueList = (NSArray<NSValue*>*) args[@"linePoints"];
             MAMapPoint linePoints[linePointsValueList.count];
-            for (int __i__ = 0; __i__ < linePointsValueList.count; __i__++) {
+            for (NSUInteger __i__ = 0; __i__ < linePointsValueList.count; __i__++) {
                 NSValue* linePointsValue = (NSValue*) [linePointsValueList objectAtIndex:__i__];
                 MAMapPoint linePointsItem;
                 [linePointsValue getValue:&linePointsItem];
@@ -216,17 +301,20 @@ extern BOOL enableLog;
             // struct arg
             NSValue* tappedPointValue = (NSValue*) args[@"tappedPoint"];
             MAMapPoint tappedPoint;
-            [tappedPointValue getValue:&tappedPoint];
+            if (tappedPointValue != nil && (NSNull*) tappedPointValue != [NSNull null]) {
+              [tappedPointValue getValue:&tappedPoint];
+            } else {
+              methodResult([FlutterError errorWithCode:@"参数非法"
+                                               message:@"参数非法"
+                                               details:@"tappedPoint不能为null"]);
+              return;
+            }
+        
             // jsonable arg
             CGFloat lineWidth = [args[@"lineWidth"] floatValue];
         
             // ref
         
-        
-            // print log
-            if (enableLog) {
-                NSLog(@"fluttify-objc: MAPolylineHitTest::MAPolylineHitTest(%@, %@, %@, %@)", args[@"linePoints"], args[@"count"], args[@"tappedPoint"], args[@"lineWidth"]);
-            }
         
             // invoke native method
             BOOL result = MAPolylineHitTest(linePoints, count, tappedPoint, lineWidth);

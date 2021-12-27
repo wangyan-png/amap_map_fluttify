@@ -27,19 +27,22 @@ class com_amap_api_maps_utils_SpatialRelationUtil extends java_lang_Object  {
 
   //region creators
   static Future<com_amap_api_maps_utils_SpatialRelationUtil> create__() async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createcom_amap_api_maps_utils_SpatialRelationUtil__', );
-    final object = com_amap_api_maps_utils_SpatialRelationUtil()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createcom_amap_api_maps_utils_SpatialRelationUtil__',
+    
+    );
+    return AmapMapFluttifyAndroidAs<com_amap_api_maps_utils_SpatialRelationUtil>(__result__);
   }
   
   static Future<List<com_amap_api_maps_utils_SpatialRelationUtil>> create_batch__(int length) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchcom_amap_api_maps_utils_SpatialRelationUtil__', {'length': length});
-  
-    final List<com_amap_api_maps_utils_SpatialRelationUtil> typedResult = resultBatch.map((result) => com_amap_api_maps_utils_SpatialRelationUtil()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchcom_amap_api_maps_utils_SpatialRelationUtil__',
+      {'length': length}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyAndroidAs<com_amap_api_maps_utils_SpatialRelationUtil>(it))
+        .toList();
   }
   
   //endregion

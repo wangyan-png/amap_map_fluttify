@@ -24,27 +24,30 @@ class MAArcRenderer extends MAOverlayPathRenderer  {
 
   //region creators
   static Future<MAArcRenderer> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAArcRenderer', {'init': init});
-    final object = MAArcRenderer()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAArcRenderer',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAArcRenderer>(__result__);
   }
   
   static Future<List<MAArcRenderer>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAArcRenderer', {'length': length, 'init': init});
-  
-    final List<MAArcRenderer> typedResult = resultBatch.map((result) => MAArcRenderer()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAArcRenderer',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAArcRenderer>(it))
+        .toList();
   }
   
   //endregion
 
   //region getters
   Future<MAArc> get_arc() async {
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAArcRenderer::get_arc", {'__this__': this});
-    return __result__ == null ? null : (MAArc()..refId = __result__);
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod("MAArcRenderer::get_arc", {'__this__': this});
+    return AmapMapFluttifyIOSAs<MAArc>(__result__);
   }
   
   //endregion
@@ -62,19 +65,13 @@ class MAArcRenderer extends MAOverlayPathRenderer  {
     }
   
     // invoke native method
-    final __result__ = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAArcRenderer::initWithArc', {"arc": arc, "__this__": this});
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod('MAArcRenderer::initWithArc', {"arc": arc, "__this__": this});
   
   
     // handle native call
   
   
-    // convert native result to dart side object
-    if (__result__ == null) {
-      return null;
-    } else {
-      final __return__ = MAArcRenderer()..refId = __result__;
-      return __return__;
-    }
+    return AmapMapFluttifyIOSAs<MAArcRenderer>(__result__);
   }
   
   //endregion
@@ -88,10 +85,8 @@ class MAArcRenderer extends MAOverlayPathRenderer  {
 extension MAArcRenderer_Batch on List<MAArcRenderer> {
   //region getters
   Future<List<MAArc>> get_arc_batch() async {
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod("MAArcRenderer::get_arc_batch", [for (final __item__ in this) {'__this__': __item__}]);
-  
-    final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAArc()..refId = __result__).toList();
-    return typedResult;
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod("MAArcRenderer::get_arc_batch", [for (final __item__ in this) {'__this__': __item__}]);
+    return (resultBatch as List)?.map((__result__) => AmapMapFluttifyIOSAs<MAArc>(__result__))?.cast<MAArc>()?.toList();
   }
   
   //endregion
@@ -103,21 +98,13 @@ extension MAArcRenderer_Batch on List<MAArcRenderer> {
   //region methods
   
   Future<List<MAArcRenderer>> initWithArc_batch(List<MAArc> arc) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
+    assert(true);
   
     // invoke native method
-    final resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('MAArcRenderer::initWithArc_batch', [for (int __i__ = 0; __i__ < length; __i__++) {"arc": arc[__i__], "__this__": this[__i__]}]);
+    final resultBatch = await kAmapMapFluttifyChannel.invokeMethod('MAArcRenderer::initWithArc_batch', [for (int __i__ = 0; __i__ < this.length; __i__++) {"arc": arc[__i__], "__this__": this[__i__]}]);
   
   
-    // convert native result to dart side object
-    if (resultBatch == null) {
-      return null;
-    } else {
-      final typedResult = (resultBatch as List).cast<String>().map((__result__) => MAArcRenderer()..refId = __result__).toList();
-      return typedResult;
-    }
+    return (resultBatch as List).map((__result__) => AmapMapFluttifyIOSAs<MAArcRenderer>(__result__)).cast<MAArcRenderer>().toList();
   }
   
   //endregion

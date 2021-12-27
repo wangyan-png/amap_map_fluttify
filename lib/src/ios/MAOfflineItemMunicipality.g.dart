@@ -24,19 +24,22 @@ class MAOfflineItemMunicipality extends MAOfflineCity  {
 
   //region creators
   static Future<MAOfflineItemMunicipality> create__({ bool init = true /* ios only */ }) async {
-    final refId = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::createMAOfflineItemMunicipality', {'init': init});
-    final object = MAOfflineItemMunicipality()..refId = refId;
-    return object;
+    final __result__ = await kAmapMapFluttifyChannel.invokeMethod(
+      'ObjectFactory::createMAOfflineItemMunicipality',
+      {'init': init}
+    );
+    return AmapMapFluttifyIOSAs<MAOfflineItemMunicipality>(__result__);
   }
   
   static Future<List<MAOfflineItemMunicipality>> create_batch__(int length, { bool init = true /* ios only */ }) async {
-    if (false) {
-      return Future.error('all args must have same length!');
-    }
-    final List resultBatch = await MethodChannel('me.yohom/amap_map_fluttify', StandardMethodCodec(FluttifyMessageCodec('amap_map_fluttify'))).invokeMethod('ObjectFactory::create_batchMAOfflineItemMunicipality', {'length': length, 'init': init});
-  
-    final List<MAOfflineItemMunicipality> typedResult = resultBatch.map((result) => MAOfflineItemMunicipality()..refId = result).toList();
-    return typedResult;
+    assert(true);
+    final __result_batch__ = await  kAmapMapFluttifyChannel.invokeListMethod(
+      'ObjectFactory::create_batchMAOfflineItemMunicipality',
+      {'length': length, 'init': init}
+    );
+    return __result_batch__
+        .map((it) => AmapMapFluttifyIOSAs<MAOfflineItemMunicipality>(it))
+        .toList();
   }
   
   //endregion
